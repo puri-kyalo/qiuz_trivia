@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soka Trivia - Live Play</title>
+    <!-- Bootstrap 5 CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        .unselectable-zone {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        .choice-btn {
+            text-align: left;
+            padding: 1rem 1.25rem;
+            font-weight: 500;
+            transition: all 0.15s ease-in-out;
+            border: 2px solid #dee2e6;
+        }
+        .choice-btn:hover:not(:disabled) {
+            background-color: #e9ecef;
+            border-color: #ced4da;
+            transform: translateY(-1px);
+        }
+        .choice-btn:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+        #submission-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(33, 37, 41, 0.85);
+            z-index: 1050;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+<body>
+    <!-- CSRF Protection Context Token Layer -->
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+    <div class="container my-3 my-md-5" style="max-width: 680px;">
+        
+        <!-- SECTION 1: Dynamic Payment Gate Form View Container -->
+        <div id="payment-gate-container" class="card shadow-sm border-0 bg-white rounded-3 mb-4 p-4 d-none">
+            <h3 class="h4 text-dark mb-3 fw-bold">Tournament Registration</h3>
+            <p class="text-muted small">Enter your details to initiate the Paystack M-Pesa secure transaction portal checkout link.</p>
+            <form action="/quiz/pay/" method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Player Name</label>
+                    <input type="text" name="player_name" class="form-control" placeholder="e.g. Alpha" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">M-Pesa Phone Number</label>
+                    <input type="tel" name="phone_number" class="form-control" placeholder="e.g. 0712345678" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Pay KSh 20.00 to Play</button>
+            </form>
+        </div>
+
+        <!-- SECTION 2: Active Live Quiz Play Workspace Layout -->
+        <div id="quiz-play-workspace" class="d-none">
+            <!-- AJAX Status Notification Box -->
+            <div id="status-notification-box" class="alert alert-info shadow-sm border-0 mb-4" role="alert">
+                <div class="d-flex align-items-center">
+                    <div class="spinner-border spinner-border-sm text-info me-3" role="status" id="status-spinner"></div>
+                    <span id="status-message-text" class="fw-semibold text-dark">Contacting server session validation node...</span>
+                </div>
+            </div>
+
+            <!-- Quiz Content Workspace Packaging Wrapper -->
+            <div id="active-quiz-interface">
+                <!-- Visual Telemetry Header Card -->
+                <div class="card shadow-sm border-0 mb-4 bg-white rounded-3">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span id="telemetry-question-counter" class="badge bg-primary fs-6 px-3 py-2">Question 1 of --</span>
+                            <span id="telemetry-countdown-timer" class="badge bg-danger fs-6 px-3 py-2 fw-monospace">Time Remaining: --:--</span>
+                        </div>
+                        <div class="progress" style="height: 10px;" role="progressbar" aria-label="Timeline progress tracking" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                            <div id="telemetry-progress-bar" class="progress-bar bg-danger progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question Block Card -->
+                <div class="card shadow-sm border-0 bg-white rounded-3 mb-5">
+                    <div id="question-block-container" class="card-body p-4 p-md-5 unselectable-zone">
+                        <h3 id="quiz-question-display-text" class="h4 text-dark mb-4 lh-base fw-bold">
+                            Loading your tournament trivia context...
+                        </h3>
+                        <div class="d-grid gap-3" id="quiz-options-wrapper">
+                            <!-- Rendered dynamically by production javascript engine context maps -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW: Inline Results Card Interface View (Rendered based on image_d2a023.jpg Layout Parameters) -->
+            <div id="inline-results-display" class="card shadow-sm border-0 bg-white rounded-3 p-4 p-md-5 text-center d-none">
+                <div class="mb-3 text-warning" style="font-size: 3.5rem; line-height: 1;">
+                    <i class="bi bi-trophy-fill"></i>
+                </div>
+                <h2 class="fw-bold text-dark mb-2">Attempt Submitted!</h2>
+                <p class="text-muted small mb-4 mx-auto" style="max-width: 420px;">
+                    The circular processing pipeline has finalized your context instance. Efficiency parameters evaluated successfully.
+                </p>
+                
+                <div class="row g-3 justify-content-center mx-auto" style="max-width: 440px;">
+                    <div class="col-6">
+                        <div class="p-3 rounded-3 border" style="background-color: #f8fafd;">
+                            <span class="d-block text-muted text-uppercase fw-semibold mb-1" style="font-size: 11px; letter-spacing: 0.5px;">Final Score</span>
+                            <strong id="results-score-value" class="fs-3 text-primary d-block fw-bold">0/10</strong>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-3 rounded-3 border" style="background-color: #f8fafd;">
+                            <span class="d-block text-muted text-uppercase fw-semibold mb-1" style="font-size: 11px; letter-spacing: 0.5px;">Speed Record</span>
+                            <strong id="results-duration-value" class="fs-3 text-primary d-block fw-monospace fw-bold">0.0s</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mandatory Lockout Overlay Structure -->
+    <div id="submission-overlay" class="d-none">
+        <div class="text-center text-white px-3">
+            <div class="spinner-border text-light mb-4" style="width: 3.5rem; height: 3.5rem;" role="status"></div>
+            <h2 id="overlay-title" class="fw-bold tracking-tight mb-2">Time is up!</h2>
+            <p id="overlay-subtitle" class="lead text-white-50">Logging final score metrics and updating database records...</p>
+        </div>
+    </div>
+
+    <!-- Client Script Application Engine -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Read query tracking tokens from layout URI
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+
+            const paymentGate = document.getElementById('payment-gate-container');
+            const quizWorkspace = document.getElementById('quiz-play-workspace');
+
+            // View routers based on token authentication presence
+            if (!token) {
+                paymentGate.classList.remove('d-none');
+                quizWorkspace.classList.add('d-none');
+                return; // Cease execution path sequence
+            }
+
+            // Valid pass detected -> initialize workspace components
+            paymentGate.classList.add('d-none');
+            quizWorkspace.classList.remove('d-none');
+
+            // Internal State Tracking Mappings
+            let quizQuestions = [];
+            let currentQuestionIndex = 0;
+            const userAnswersPayload = {};
+            let globalTimerIntervalId = null;
+            let executionLockoutActive = false;
+            
+            // Server Context Calculations (assigned dynamically once payload maps)
+            let targetTimestamp = null;
+            let totalDurationWindowSeconds = null;
+            let activeSessionId = null;
+
+            const csrfTokenValue = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            const statusBox = document.getElementById("status-notification-box");
+            const statusText = document.getElementById("status-message-text");
+            const statusSpinner = document.getElementById("status-spinner");
+            
+            const txtCounter = document.getElementById("telemetry-question-counter");
+            const txtCountdown = document.getElementById("telemetry-countdown-timer");
+            const progressBar = document.getElementById("telemetry-progress-bar");
+            
+            const questionContainer = document.getElementById("question-block-container");
+            const txtQuestionDisplay = document.getElementById("quiz-question-display-text");
+            const optionsWrapper = document.getElementById("quiz-options-wrapper");
+            const submissionOverlay = document.getElementById("submission-overlay");
+
+            // Element definitions for rendering inline changes
+            const quizInterface = document.getElementById("active-quiz-interface");
+            const resultsInterface = document.getElementById("inline-results-display");
+            const scoreDisplay = document.getElementById("results-score-value");
+            const durationDisplay = document.getElementById("results-duration-value");
+
+            // Anti-Cheat Script Protections
+            [questionContainer, document.body].forEach(element => {
+                element.addEventListener("contextmenu", (e) => e.preventDefault());
+                element.addEventListener("selectstart", (e) => e.preventDefault());
+                element.addEventListener("keydown", (e) => {
+                    const isMeta = e.ctrlKey || e.metaKey;
+                    const pressedKey = e.key.toLowerCase();
+                    if (isMeta && (pressedKey === 'c' || pressedKey === 'a' || pressedKey === 'x')) {
+                        e.preventDefault();
+                    }
+                });
+            });
+
+            // High Precision Time-Sync Execution Loop Context Tracker
+            function runHighPrecisionClockTick() {
+                if (executionLockoutActive || !targetTimestamp) return;
+
+                const currentUnixWallClockMs = Date.now();
+                const totalRemainingMs = targetTimestamp - currentUnixWallClockMs;
+
+                if (totalRemainingMs <= 0) {
+                    txtCountdown.textContent = "Time Remaining: 00:00";
+                    progressBar.style.width = "0%";
+                    executeForcedAutomaticSubmission("Time is up!");
+                    return;
+                }
+
+                const totalSecondsLeft = Math.ceil(totalRemainingMs / 1000);
+                const minutesPart = Math.floor(totalSecondsLeft / 60);
+                const secondsPart = totalSecondsLeft % 60;
+                
+                txtCountdown.textContent = `Time Remaining: ${String(minutesPart).padStart(2, '0')}:${String(secondsPart).padStart(2, '0')}`;
+
+                const currentPercentageLeft = (totalRemainingMs / (totalDurationWindowSeconds * 1000)) * 100;
+                progressBar.style.width = `${Math.max(0, Math.min(100, currentPercentageLeft))}%`;
+            }
+
+            function initializeGlobalTimer() {
+                runHighPrecisionClockTick();
+                globalTimerIntervalId = setInterval(runHighPrecisionClockTick, 200);
+            }
+
+            function renderCurrentQuestionState() {
+                if (currentQuestionIndex >= quizQuestions.length) {
+                    executeForcedAutomaticSubmission("Quiz Finished!");
+                    return;
+                }
+
+                const activeQuestionObj = quizQuestions[currentQuestionIndex];
+                txtCounter.textContent = `Question ${currentQuestionIndex + 1} of ${quizQuestions.length}`;
+                txtQuestionDisplay.textContent = activeQuestionObj.question_text;
+
+                optionsWrapper.innerHTML = "";
+                activeQuestionObj.choices.forEach((choiceString, idx) => {
+                    const targetedSelectionIndex = idx + 1;
+                    const optionButton = document.createElement("button");
+                    optionButton.className = "btn btn-light choice-btn text-start w-100 rounded-3 shadow-sm border text-dark fw-medium";
+                    optionButton.textContent = choiceString;
+                    optionButton.setAttribute("data-choice-idx", targetedSelectionIndex);
+                    
+                    optionButton.addEventListener("click", () => handleUserSelection(activeQuestionObj.id, targetedSelectionIndex));
+                    optionsWrapper.appendChild(optionButton);
+                });
+            }
+
+            function handleUserSelection(questionId, choiceIndex) {
+                if (executionLockoutActive) return;
+                userAnswersPayload[questionId] = choiceIndex;
+                currentQuestionIndex++;
+                renderCurrentQuestionState();
+            }
+
+            function executeForcedAutomaticSubmission(displayReasonMessage) {
+                if (executionLockoutActive) return;
+                executionLockoutActive = true;
+                
+                clearInterval(globalTimerIntervalId);
+                document.querySelectorAll(".choice-btn").forEach(btn => btn.disabled = true);
+                
+                document.getElementById("overlay-title").textContent = displayReasonMessage;
+                submissionOverlay.classList.remove("d-none");
+
+                // UPDATED PATH: Process calculations dynamically right inside this layout instance
+                fetch("/quiz/submit-answers/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrfTokenValue
+                    },
+                    body: JSON.stringify({
+                        session_id: activeSessionId,
+                        answers: userAnswersPayload
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error("Processing failure mapping validation score updates");
+                    return response.json();
+                })
+                .then(data => {
+                    // Hide execution mask overlay
+                    submissionOverlay.classList.add("d-none");
+                    
+                    // Hide active quiz components
+                    quizInterface.classList.add("d-none");
+                    
+                    // Format response score attributes into target view context positions
+                    scoreDisplay.textContent = `${data.score || 0}/${quizQuestions.length}`;
+                    
+                    // Fallback configuration if duration metrics calculation varies from payload
+                    const computedTime = data.duration_seconds ? parseFloat(data.duration_seconds).toFixed(1) : "0.0";
+                    durationDisplay.textContent = `${computedTime}s`;
+                    
+                    // Unmask results layout board
+                    resultsInterface.classList.remove("d-none");
+                })
+                .catch(error => {
+                    console.error("Submission operational failure:", error);
+                    document.getElementById("overlay-subtitle").textContent = "Connection drop context handled. Retrying transmission...";
+                    setTimeout(() => {
+                        executionLockoutActive = false;
+                        executeForcedAutomaticSubmission(displayReasonMessage);
+                    }, 2000);
+                });
+            }
+
+            // Fire handshake execution on load context
+            statusText.textContent = "Provisioning memory-guarded challenge session...";
+            
+            // DYNAMIC APP PATH: Connects straight to the session initialization endpoint
+            fetch("/quiz/api/start-session/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfTokenValue
+                },
+                body: JSON.stringify({ access_token: token })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("Token clearance failure or verification conflict");
+                return res.json();
+            })
+            .then(data => {
+                if(data.success) {
+                    statusBox.classList.add("d-none");
+                    quizQuestions = data.questions;
+                    activeSessionId = data.session_id;
+                    totalDurationWindowSeconds = parseFloat(data.global_limit_seconds || 60);
+                    
+                    // Set client target clock endpoint relative to time metrics
+                    targetTimestamp = Date.now() + (totalDurationWindowSeconds * 1000);
+                    
+                    initializeGlobalTimer();
+                    renderCurrentQuestionState();
+                } else {
+                    throw new Error(data.error || "Initialization anomaly.");
+                }
+            })
+            .catch(err => {
+                statusSpinner.classList.add("d-none");
+                statusText.className = "fw-semibold text-danger";
+                statusText.textContent = err.message || "An initialization error occurred.";
+            });
+        });
+    </script>
+</body>
+</html>

@@ -3,13 +3,21 @@ import json
 import logging
 import random
 import uuid
+import time
 from decimal import Decimal
+from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.db import transaction
 from django.utils import timezone
 from django.db.models import F
+
+import requests
+from django.conf import settings
+from django.shortcuts import redirect
+from django.urls import reverse
+
 
 from .models import QuizPool, PaystackTransaction, QuestionBank, GameSession
 from .paystack_utils import verify_paystack_signature, verify_paystack_transaction
@@ -19,6 +27,147 @@ logger = logging.getLogger(__name__)
 GLOBAL_SESSION_LIMIT_SECONDS = 80.0
 LATENCY_GRACE_WINDOW_SECONDS = 5.0
 
+
+
+def initiate_payment(request):
+    if request.method == "POST":
+        player_name = request.POST.get('player_name')
+        phone = request.POST.get('phone_number')
+        email = request.POST.get('email', f"{phone}@trivia.com")  # Paystack requires an email format
+        amount = 20.00  # Entry fee in KSh
+        
+        # FIX STEP 1: Generate an authentic 36-character hex UUID string
+        # This will satisfy the database UUIDField and act as our tracking key
+        payment_uuid = str(uuid.uuid4())
+        
+        # 1. Initialize data with Paystack API
+        url = "https://api.paystack.co/transaction/initialize"
+        headers = {
+            "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+            "Content-Type": "application/json",
+        }
+        
+        callback_url = request.build_absolute_uri(reverse('quiz:paystack_callback'))
+        
+        payload = {
+            "email": email,
+            "amount": int(amount * 100),  # Paystack counts in cents
+            "callback_url": callback_url,
+            # FIX STEP 2: Force Paystack to use our clean UUID string as its transaction reference key
+            "reference": payment_uuid, 
+            "metadata": {
+                "player_name": player_name,
+                "phone_number": phone
+            }
+        }
+        
+        try:
+            response = requests.post(url, json=payload, headers=headers).json()
+        except requests.exceptions.RequestException:
+            # Fallback handling in case Paystack API goes temporarily unreachable
+            return render(request, 'quiz/landing.html', {'error': 'Payment gateway unreachable.'})
+        
+        if response.get('status'):
+            # 2. Save the transaction baseline tracking model in pending status
+            PaystackTransaction.objects.create(
+                # 🔥 FIXED CRITICAL FIELD: Satisfies the UNIQUE constraint requirement on the database table
+                paystack_reference=payment_uuid, 
+                
+                access_token=payment_uuid, 
+                player_name=player_name,
+                phone_number=phone,
+                email=email,
+                amount=amount,
+                status='PENDING'
+            )
+            # 3. Securely redirect user straight out to Paystack's hosted payment gateway interface
+            return redirect(response['data']['authorization_url'])
+            
+    return render(request, 'quiz/landing.html')
+
+def paystack_callback(request):
+    reference = request.GET.get('reference')  # This will now safely return our UUID string back from Paystack
+    
+    if not reference:
+        return redirect('quiz:payment_failed')
+
+    url = f"https://api.paystack.co/transaction/verify/{reference}"
+    headers = {
+        "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+    }
+    
+    try:
+        response = requests.get(url, headers=headers).json()
+    except Exception:
+        return redirect('quiz:payment_failed')
+
+    if response.get('status') and response['data']['status'] == 'success':
+        # Safely looks up the transaction using the returned UUID string
+        tx = PaystackTransaction.objects.filter(access_token=reference).first()
+        
+        if tx:
+            tx.status = 'SUCCESS'
+            metadata = response['data'].get('metadata', {})
+            tx.player_name = metadata.get('player_name', tx.player_name)
+            tx.phone_number = metadata.get('phone_number', tx.phone_number)
+            tx.save()
+            
+            base_url = reverse('quiz:quiz_play')
+            return redirect(f"{base_url}?token={tx.access_token}")
+            
+    return redirect('quiz:payment_failed')
+
+# ==============================================================================
+# MAIN PAGE RENDERING & RESULTS LAYER
+# ==============================================================================
+
+def quiz_play_view(request):
+    """
+    Renders the live quiz layout template and provides initial server state context.
+    """
+    current_now = timezone.now()
+    active_pool = QuizPool.objects.filter(
+        is_active=True,
+        start_time__lte=current_now,
+        end_time__gte=current_now
+    ).first()
+
+    pool_id = active_pool.id if active_pool else 1
+    target_timestamp_ms = int((time.time() + GLOBAL_SESSION_LIMIT_SECONDS) * 1000)
+
+    context = {
+        'session_id': pool_id,
+        'target_timestamp_ms': target_timestamp_ms,
+        'duration_limit_seconds': int(GLOBAL_SESSION_LIMIT_SECONDS),
+        'payment_status': 'PENDING',
+        'transaction_reference': request.GET.get('reference', 'MPESA_REF_PENDING'),
+        'access_token': request.GET.get('token', '')
+    }
+    return render(request, 'play.html', context)
+
+
+def quiz_results_view(request):
+    """
+    Aggregates metrics for display on performance feedback screens post-submission.
+    """
+    session_id = request.GET.get('session_id')
+    if not session_id:
+        return HttpResponse("Missing tracking context session attribute parameter.", status=400)
+
+    session = GameSession.objects.filter(id=session_id).first()
+    if not session:
+        return HttpResponse("Target ledger record could not be resolved.", status=404)
+
+    context = {
+        'score': session.score,
+        'duration': round(session.duration_seconds, 2),
+        'player_name': session.transaction_reference.player_name,
+        'is_disqualified': session.is_disqualified,
+        'pool_id': session.pool.id
+    }
+    return render(request, '/quiz/', context)
+
+
 # ==============================================================================
 # PHASE 2: PAYSTACK WEBHOOK & GUEST SAFETY NET VIEWS
 # ==============================================================================
@@ -26,10 +175,6 @@ LATENCY_GRACE_WINDOW_SECONDS = 5.0
 @csrf_exempt
 @require_POST
 def paystack_webhook(request):
-    """
-    High-Throughput Webhook Listener capturing asynchronous charge.success updates.
-    Fulfills 50/50 balance allocations and leaves string formatting tasks safely to model saves.
-    """
     signature = request.META.get('HTTP_X_PAYSTACK_SIGNATURE')
     if not signature or not verify_paystack_signature(request.body, signature):
         return HttpResponse("Unauthorized Signature Header Missing or Spoofed.", status=401)
@@ -81,9 +226,8 @@ def paystack_webhook(request):
         tx.phone_number = fallback_phone
         if not tx.access_token:
             tx.access_token = uuid.uuid4()
-        tx.save()  # Explicit save executes the model's clean number normalization
+        tx.save()
 
-        # Process 50/50 Prize Pool Distribution Split Atomically
         current_now = timezone.now()
         active_pool = QuizPool.objects.filter(
             is_active=True, 
@@ -99,21 +243,18 @@ def paystack_webhook(request):
 
 @require_POST
 def verify_user_payment(request):
-    """
-    The Guest Transaction Safety Net view addressing client drops manually.
-    """
     try:
         body = json.loads(request.body.decode('utf-8'))
         reference = body.get('reference')
     except (ValueError, KeyError, AttributeError):
-        return JsonResponse({'success': False, 'error': 'Malformed request body payload format.'}, status=400)
+        return JsonResponse({'success': False, 'status': 'FAILED', 'error': 'Malformed request body payload format.'}, status=400)
 
     if not reference:
-        return JsonResponse({'success': False, 'error': 'Reference query parameter required.'}, status=400)
+        return JsonResponse({'success': False, 'status': 'FAILED', 'error': 'Reference query parameter required.'}, status=400)
 
     verification_result = verify_paystack_transaction(reference)
     if not verification_result or verification_result.get('status') != 'SUCCESS':
-        return JsonResponse({'success': False, 'error': 'Payment verification failed at payment gateway.'}, status=422)
+        return JsonResponse({'success': False, 'status': 'FAILED', 'error': 'Payment verification failed at payment gateway.'}, status=422)
 
     amount_kes = verification_result.get('amount', Decimal('20.00'))
     customer_email = verification_result.get('email')
@@ -139,7 +280,7 @@ def verify_user_payment(request):
         )
 
         if tx.status == 'SUCCESS':
-            return JsonResponse({'success': True, 'detail': 'Processed via webhook loop.', 'access_token': str(tx.access_token)})
+            return JsonResponse({'success': True, 'status': 'SUCCESS', 'detail': 'Processed via webhook loop.', 'access_token': str(tx.access_token)})
 
         tx.status = 'SUCCESS'
         tx.player_name = player_name
@@ -158,7 +299,7 @@ def verify_user_payment(request):
         if active_pool:
             active_pool.process_incoming_entry(entry_fee=amount_kes)
 
-    return JsonResponse({'success': True, 'detail': 'Safety net verification complete.', 'access_token': str(tx.access_token)})
+    return JsonResponse({'success': True, 'status': 'SUCCESS', 'detail': 'Safety net verification complete.', 'access_token': str(tx.access_token)})
 
 
 # ==============================================================================
@@ -167,10 +308,6 @@ def verify_user_payment(request):
 
 @require_POST
 def start_quiz_session(request):
-    """
-    Validates dynamic tokens, grabs 10 randomized unique question IDs inside Python memory,
-    and returns questions with answers stripped out to protect against client injection exploits.
-    """
     try:
         body = json.loads(request.body.decode('utf-8'))
         token_str = body.get('access_token')
@@ -223,12 +360,7 @@ def start_quiz_session(request):
     payload_questions = [{
         'id': q.id,
         'question_text': q.question_text,
-        'choices': {
-            '1': q.choice_1,
-            '2': q.choice_2,
-            '3': q.choice_3,
-            '4': q.choice_4
-        },
+        'choices': [q.choice_1, q.choice_2, q.choice_3, q.choice_4],
         'category': q.category
     } for q in questions]
 
@@ -243,9 +375,6 @@ def start_quiz_session(request):
 
 @require_POST
 def submit_quiz_answers(request):
-    """
-    Accepts quiz entries, tracks precision speed calculations, and scores answers securely.
-    """
     try:
         body = json.loads(request.body.decode('utf-8'))
         session_id = body.get('session_id')
@@ -275,6 +404,7 @@ def submit_quiz_answers(request):
         max_allowed_time = GLOBAL_SESSION_LIMIT_SECONDS + LATENCY_GRACE_WINDOW_SECONDS
         if total_seconds > max_allowed_time:
             session.is_disqualified = True
+            session.score = 0
             session.save()
             return JsonResponse({
                 'success': False, 

@@ -59,7 +59,7 @@ ROOT_URLCONF = 'q_trivia.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -136,4 +136,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # --- Third-Party Integrations Pipeline Configurations ---
 
 # Pull the API access credentials securely loaded out of the .env file
-PAYSTACK_SECRET_KEY = os.environ.get('PAYSTACK_SECRET_KEY')
+PAYSTACK_SECRET_KEY = os.getenv('PAYSTACK_SECRET_KEY')
+PAYSTACK_SUBACCOUNT_CODE = os.getenv('PAYSTACK_SUBACCOUNT_CODE')
+PAYSTACK_BEARER = os.getenv('PAYSTACK_BEARER', 'subaccount')

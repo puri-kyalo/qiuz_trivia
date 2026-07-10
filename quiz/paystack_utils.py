@@ -30,6 +30,7 @@ def verify_paystack_transaction(reference):
     """
     Queries Paystack's REST verification endpoint in real-time.
     Converts minor currency subunits (cents) to standard Decimal KES values.
+    Calculates the clean net amount by deducting transaction fees.
     """
     secret_key = getattr(settings, 'PAYSTACK_SECRET_KEY', None)
     if not secret_key:
@@ -48,12 +49,20 @@ def verify_paystack_transaction(reference):
             response_data = response.json()
             if response_data.get('status') and response_data.get('data', {}).get('status') == 'success':
                 data = response_data['data']
+                
+                # Convert total amount from minor units (cents) to standard KES
                 amount_minor = Decimal(str(data.get('amount', 0)))
                 amount_kes = amount_minor / Decimal('100.00')
+                
+                # Extract and convert the gateway processing fee
+                fee_minor = Decimal(str(data.get('fees', 0)))
+                fee_kes = fee_minor / Decimal('100.00')
                 
                 return {
                     'status': 'SUCCESS',
                     'amount': amount_kes,
+                    'fee': fee_kes,                      # Paystack's structural transaction fee
+                    'net_amount': amount_kes - fee_kes,  # Total clean funds remaining
                     'email': data.get('customer', {}).get('email'),
                     'metadata': data.get('metadata'),
                 }

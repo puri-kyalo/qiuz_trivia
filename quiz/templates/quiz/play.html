@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soka Trivia - Live Play</title>
-    <!-- Bootstrap 5 CSS CDN -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         body {
@@ -52,16 +52,14 @@
     </style>
 </head>
 <body>
-    <!-- CSRF Protection Context Token Layer -->
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 
     <div class="container my-3 my-md-5" style="max-width: 680px;">
         
-        <!-- SECTION 1: Dynamic Payment Gate Form View Container -->
         <div id="payment-gate-container" class="card shadow-sm border-0 bg-white rounded-3 mb-4 p-4 d-none">
             <h3 class="h4 text-dark mb-3 fw-bold">Tournament Registration</h3>
             <p class="text-muted small">Enter your details to initiate the Paystack M-Pesa secure transaction portal checkout link.</p>
-            <form action="/quiz/pay/" method="POST">
+            <form action="{% url 'quiz:initiate_payment' %}" method="POST">
                 {% csrf_token %}
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Player Name</label>
@@ -75,9 +73,7 @@
             </form>
         </div>
 
-        <!-- SECTION 2: Active Live Quiz Play Workspace Layout -->
         <div id="quiz-play-workspace" class="d-none">
-            <!-- AJAX Status Notification Box -->
             <div id="status-notification-box" class="alert alert-info shadow-sm border-0 mb-4" role="alert">
                 <div class="d-flex align-items-center">
                     <div class="spinner-border spinner-border-sm text-info me-3" role="status" id="status-spinner"></div>
@@ -85,9 +81,7 @@
                 </div>
             </div>
 
-            <!-- Quiz Content Workspace Packaging Wrapper -->
             <div id="active-quiz-interface">
-                <!-- Visual Telemetry Header Card -->
                 <div class="card shadow-sm border-0 mb-4 bg-white rounded-3">
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -100,27 +94,24 @@
                     </div>
                 </div>
 
-                <!-- Question Block Card -->
                 <div class="card shadow-sm border-0 bg-white rounded-3 mb-5">
                     <div id="question-block-container" class="card-body p-4 p-md-5 unselectable-zone">
                         <h3 id="quiz-question-display-text" class="h4 text-dark mb-4 lh-base fw-bold">
                             Loading your tournament trivia context...
                         </h3>
                         <div class="d-grid gap-3" id="quiz-options-wrapper">
-                            <!-- Rendered dynamically by production javascript engine context maps -->
-                        </div>
+                            </div>
                     </div>
                 </div>
             </div>
 
-            <!-- NEW: Inline Results Card Interface View (Rendered based on image_d2a023.jpg Layout Parameters) -->
             <div id="inline-results-display" class="card shadow-sm border-0 bg-white rounded-3 p-4 p-md-5 text-center d-none">
                 <div class="mb-3 text-warning" style="font-size: 3.5rem; line-height: 1;">
                     <i class="bi bi-trophy-fill"></i>
                 </div>
                 <h2 class="fw-bold text-dark mb-2">Attempt Submitted!</h2>
                 <p class="text-muted small mb-4 mx-auto" style="max-width: 420px;">
-                    The circular processing pipeline has finalized your context instance. Efficiency parameters evaluated successfully.
+                    Your trivia attempt has been finalized and recorded successfully.
                 </p>
                 
                 <div class="row g-3 justify-content-center mx-auto" style="max-width: 440px;">
@@ -141,7 +132,6 @@
         </div>
     </div>
 
-    <!-- Mandatory Lockout Overlay Structure -->
     <div id="submission-overlay" class="d-none">
         <div class="text-center text-white px-3">
             <div class="spinner-border text-light mb-4" style="width: 3.5rem; height: 3.5rem;" role="status"></div>
@@ -150,35 +140,29 @@
         </div>
     </div>
 
-    <!-- Client Script Application Engine -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // Read query tracking tokens from layout URI
             const urlParams = new URLSearchParams(window.location.search);
             const token = urlParams.get('token');
 
             const paymentGate = document.getElementById('payment-gate-container');
             const quizWorkspace = document.getElementById('quiz-play-workspace');
 
-            // View routers based on token authentication presence
             if (!token) {
                 paymentGate.classList.remove('d-none');
                 quizWorkspace.classList.add('d-none');
-                return; // Cease execution path sequence
+                return;
             }
 
-            // Valid pass detected -> initialize workspace components
             paymentGate.classList.add('d-none');
             quizWorkspace.classList.remove('d-none');
 
-            // Internal State Tracking Mappings
             let quizQuestions = [];
             let currentQuestionIndex = 0;
             const userAnswersPayload = {};
             let globalTimerIntervalId = null;
             let executionLockoutActive = false;
             
-            // Server Context Calculations (assigned dynamically once payload maps)
             let targetTimestamp = null;
             let totalDurationWindowSeconds = null;
             let activeSessionId = null;
@@ -197,7 +181,6 @@
             const optionsWrapper = document.getElementById("quiz-options-wrapper");
             const submissionOverlay = document.getElementById("submission-overlay");
 
-            // Element definitions for rendering inline changes
             const quizInterface = document.getElementById("active-quiz-interface");
             const resultsInterface = document.getElementById("inline-results-display");
             const scoreDisplay = document.getElementById("results-score-value");
@@ -216,7 +199,6 @@
                 });
             });
 
-            // High Precision Time-Sync Execution Loop Context Tracker
             function runHighPrecisionClockTick() {
                 if (executionLockoutActive || !targetTimestamp) return;
 
@@ -285,8 +267,8 @@
                 document.getElementById("overlay-title").textContent = displayReasonMessage;
                 submissionOverlay.classList.remove("d-none");
 
-                // UPDATED PATH: Process calculations dynamically right inside this layout instance
-                fetch("/quiz/submit-answers/", {
+                // FIXED: Updated relative path parameter to match standard workspace URL paths
+                fetch("{% url 'quiz:js_submit_answers' %}", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -302,20 +284,13 @@
                     return response.json();
                 })
                 .then(data => {
-                    // Hide execution mask overlay
                     submissionOverlay.classList.add("d-none");
-                    
-                    // Hide active quiz components
                     quizInterface.classList.add("d-none");
                     
-                    // Format response score attributes into target view context positions
                     scoreDisplay.textContent = `${data.score || 0}/${quizQuestions.length}`;
-                    
-                    // Fallback configuration if duration metrics calculation varies from payload
                     const computedTime = data.duration_seconds ? parseFloat(data.duration_seconds).toFixed(1) : "0.0";
                     durationDisplay.textContent = `${computedTime}s`;
                     
-                    // Unmask results layout board
                     resultsInterface.classList.remove("d-none");
                 })
                 .catch(error => {
@@ -328,11 +303,10 @@
                 });
             }
 
-            // Fire handshake execution on load context
-            statusText.textContent = "Provisioning memory-guarded challenge session...";
+            statusText.textContent = "Provisioning challenge session...";
             
-            // DYNAMIC APP PATH: Connects straight to the session initialization endpoint
-            fetch("/quiz/api/start-session/", {
+            // FIXED: Updated path to match your exact session initialization URL routing name
+            fetch("{% url 'quiz:js_start_session' %}", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -349,9 +323,8 @@
                     statusBox.classList.add("d-none");
                     quizQuestions = data.questions;
                     activeSessionId = data.session_id;
-                    totalDurationWindowSeconds = parseFloat(data.global_limit_seconds || 60);
+                    totalDurationWindowSeconds = parseFloat(data.global_limit_seconds || 80);
                     
-                    // Set client target clock endpoint relative to time metrics
                     targetTimestamp = Date.now() + (totalDurationWindowSeconds * 1000);
                     
                     initializeGlobalTimer();

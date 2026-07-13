@@ -5,17 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soka Trivia - Live Play</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #f4f6f9;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        .unselectable-zone {
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -58,12 +52,12 @@
         
         <div id="payment-gate-container" class="card shadow-sm border-0 bg-white rounded-3 mb-4 p-4 d-none">
             <h3 class="h4 text-dark mb-3 fw-bold">Tournament Registration</h3>
-            <p class="text-muted small">Enter your details to initiate the Paystack M-Pesa secure transaction portal checkout link.</p>
+            <p class="text-muted small">Enter your details below to buy a match ticket via M-Pesa.</p>
             <form action="{% url 'quiz:initiate_payment' %}" method="POST">
                 {% csrf_token %}
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Player Name</label>
-                    <input type="text" name="player_name" class="form-control" placeholder="e.g. Alpha" required>
+                    <input type="text" name="player_name" class="form-control" placeholder="e.g. John" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-semibold">M-Pesa Phone Number</label>
@@ -77,7 +71,7 @@
             <div id="status-notification-box" class="alert alert-info shadow-sm border-0 mb-4" role="alert">
                 <div class="d-flex align-items-center">
                     <div class="spinner-border spinner-border-sm text-info me-3" role="status" id="status-spinner"></div>
-                    <span id="status-message-text" class="fw-semibold text-dark">Contacting server session validation node...</span>
+                    <span id="status-message-text" class="fw-semibold text-dark">Connecting to server...</span>
                 </div>
             </div>
 
@@ -85,22 +79,21 @@
                 <div class="card shadow-sm border-0 mb-4 bg-white rounded-3">
                     <div class="card-body p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span id="telemetry-question-counter" class="badge bg-primary fs-6 px-3 py-2">Question 1 of --</span>
-                            <span id="telemetry-countdown-timer" class="badge bg-danger fs-6 px-3 py-2 fw-monospace">Time Remaining: --:--</span>
+                            <span id="question-counter" class="badge bg-primary fs-6 px-3 py-2">Question 1 of --</span>
+                            <span id="countdown-timer" class="badge bg-danger fs-6 px-3 py-2 fw-monospace">Time Remaining: --:--</span>
                         </div>
-                        <div class="progress" style="height: 10px;" role="progressbar" aria-label="Timeline progress tracking" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                            <div id="telemetry-progress-bar" class="progress-bar bg-danger progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+                        <div class="progress" style="height: 10px;" role="progressbar" aria-label="Progress tracking" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                            <div id="progress-bar" class="progress-bar bg-danger progress-bar-striped progress-bar-animated" style="width: 100%"></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="card shadow-sm border-0 bg-white rounded-3 mb-5">
-                    <div id="question-block-container" class="card-body p-4 p-md-5 unselectable-zone">
+                    <div id="question-block-container" class="card-body p-4 p-md-5">
                         <h3 id="quiz-question-display-text" class="h4 text-dark mb-4 lh-base fw-bold">
-                            Loading your tournament trivia context...
+                            Loading your quiz questions...
                         </h3>
-                        <div class="d-grid gap-3" id="quiz-options-wrapper">
-                            </div>
+                        <div class="d-grid gap-3" id="quiz-options-wrapper"></div>
                     </div>
                 </div>
             </div>
@@ -109,9 +102,9 @@
                 <div class="mb-3 text-warning" style="font-size: 3.5rem; line-height: 1;">
                     <i class="bi bi-trophy-fill"></i>
                 </div>
-                <h2 class="fw-bold text-dark mb-2">Attempt Submitted!</h2>
+                <h2 class="fw-bold text-dark mb-2">Quiz Submitted!</h2>
                 <p class="text-muted small mb-4 mx-auto" style="max-width: 420px;">
-                    Your trivia attempt has been finalized and recorded successfully.
+                    Your entry has been processed and successfully recorded.
                 </p>
                 
                 <div class="row g-3 justify-content-center mx-auto" style="max-width: 440px;">
@@ -123,7 +116,7 @@
                     </div>
                     <div class="col-6">
                         <div class="p-3 rounded-3 border" style="background-color: #f8fafd;">
-                            <span class="d-block text-muted text-uppercase fw-semibold mb-1" style="font-size: 11px; letter-spacing: 0.5px;">Speed Record</span>
+                            <span class="d-block text-muted text-uppercase fw-semibold mb-1" style="font-size: 11px; letter-spacing: 0.5px;">Time Taken</span>
                             <strong id="results-duration-value" class="fs-3 text-primary d-block fw-monospace fw-bold">0.0s</strong>
                         </div>
                     </div>
@@ -136,7 +129,7 @@
         <div class="text-center text-white px-3">
             <div class="spinner-border text-light mb-4" style="width: 3.5rem; height: 3.5rem;" role="status"></div>
             <h2 id="overlay-title" class="fw-bold tracking-tight mb-2">Time is up!</h2>
-            <p id="overlay-subtitle" class="lead text-white-50">Logging final score metrics and updating database records...</p>
+            <p id="overlay-subtitle" class="lead text-white-50">Submitting your responses safely...</p>
         </div>
     </div>
 
@@ -172,9 +165,9 @@
             const statusText = document.getElementById("status-message-text");
             const statusSpinner = document.getElementById("status-spinner");
             
-            const txtCounter = document.getElementById("telemetry-question-counter");
-            const txtCountdown = document.getElementById("telemetry-countdown-timer");
-            const progressBar = document.getElementById("telemetry-progress-bar");
+            const txtCounter = document.getElementById("question-counter");
+            const txtCountdown = document.getElementById("countdown-timer");
+            const progressBar = document.getElementById("progress-bar");
             
             const questionContainer = document.getElementById("question-block-container");
             const txtQuestionDisplay = document.getElementById("quiz-question-display-text");
@@ -186,7 +179,7 @@
             const scoreDisplay = document.getElementById("results-score-value");
             const durationDisplay = document.getElementById("results-duration-value");
 
-            // Anti-Cheat Script Protections
+            // Integrity Protections
             [questionContainer, document.body].forEach(element => {
                 element.addEventListener("contextmenu", (e) => e.preventDefault());
                 element.addEventListener("selectstart", (e) => e.preventDefault());
@@ -199,7 +192,7 @@
                 });
             });
 
-            function runHighPrecisionClockTick() {
+            function runClockTick() {
                 if (executionLockoutActive || !targetTimestamp) return;
 
                 const currentUnixWallClockMs = Date.now();
@@ -208,7 +201,7 @@
                 if (totalRemainingMs <= 0) {
                     txtCountdown.textContent = "Time Remaining: 00:00";
                     progressBar.style.width = "0%";
-                    executeForcedAutomaticSubmission("Time is up!");
+                    executeForcedSubmission("Time is up!");
                     return;
                 }
 
@@ -222,14 +215,14 @@
                 progressBar.style.width = `${Math.max(0, Math.min(100, currentPercentageLeft))}%`;
             }
 
-            function initializeGlobalTimer() {
-                runHighPrecisionClockTick();
-                globalTimerIntervalId = setInterval(runHighPrecisionClockTick, 200);
+            function initializeTimer() {
+                runClockTick();
+                globalTimerIntervalId = setInterval(runClockTick, 200);
             }
 
-            function renderCurrentQuestionState() {
+            function renderQuestion() {
                 if (currentQuestionIndex >= quizQuestions.length) {
-                    executeForcedAutomaticSubmission("Quiz Finished!");
+                    executeForcedSubmission("Quiz Completed");
                     return;
                 }
 
@@ -239,13 +232,13 @@
 
                 optionsWrapper.innerHTML = "";
                 activeQuestionObj.choices.forEach((choiceString, idx) => {
-                    const targetedSelectionIndex = idx + 1;
+                    const choiceIndex = idx + 1;
                     const optionButton = document.createElement("button");
                     optionButton.className = "btn btn-light choice-btn text-start w-100 rounded-3 shadow-sm border text-dark fw-medium";
                     optionButton.textContent = choiceString;
-                    optionButton.setAttribute("data-choice-idx", targetedSelectionIndex);
+                    optionButton.setAttribute("data-choice-idx", choiceIndex);
                     
-                    optionButton.addEventListener("click", () => handleUserSelection(activeQuestionObj.id, targetedSelectionIndex));
+                    optionButton.addEventListener("click", () => handleUserSelection(activeQuestionObj.id, choiceIndex));
                     optionsWrapper.appendChild(optionButton);
                 });
             }
@@ -254,10 +247,10 @@
                 if (executionLockoutActive) return;
                 userAnswersPayload[questionId] = choiceIndex;
                 currentQuestionIndex++;
-                renderCurrentQuestionState();
+                renderQuestion();
             }
 
-            function executeForcedAutomaticSubmission(displayReasonMessage) {
+            function executeForcedSubmission(displayReasonMessage) {
                 if (executionLockoutActive) return;
                 executionLockoutActive = true;
                 
@@ -267,7 +260,6 @@
                 document.getElementById("overlay-title").textContent = displayReasonMessage;
                 submissionOverlay.classList.remove("d-none");
 
-                // FIXED: Updated relative path parameter to match standard workspace URL paths
                 fetch("{% url 'quiz:js_submit_answers' %}", {
                     method: "POST",
                     headers: {
@@ -280,7 +272,7 @@
                     })
                 })
                 .then(response => {
-                    if (!response.ok) throw new Error("Processing failure mapping validation score updates");
+                    if (!response.ok) throw new Error("Submission validation failure");
                     return response.json();
                 })
                 .then(data => {
@@ -294,18 +286,17 @@
                     resultsInterface.classList.remove("d-none");
                 })
                 .catch(error => {
-                    console.error("Submission operational failure:", error);
-                    document.getElementById("overlay-subtitle").textContent = "Connection drop context handled. Retrying transmission...";
+                    console.error("Submission error:", error);
+                    document.getElementById("overlay-subtitle").textContent = "Submission failed. Retrying...";
                     setTimeout(() => {
                         executionLockoutActive = false;
-                        executeForcedAutomaticSubmission(displayReasonMessage);
+                        executeForcedSubmission(displayReasonMessage);
                     }, 2000);
                 });
             }
 
-            statusText.textContent = "Provisioning challenge session...";
+            statusText.textContent = "Setting up quiz session...";
             
-            // FIXED: Updated path to match your exact session initialization URL routing name
             fetch("{% url 'quiz:js_start_session' %}", {
                 method: "POST",
                 headers: {
@@ -315,7 +306,7 @@
                 body: JSON.stringify({ access_token: token })
             })
             .then(res => {
-                if (!res.ok) throw new Error("Token clearance failure or verification conflict");
+                if (!res.ok) throw new Error("Invalid token or access restricted.");
                 return res.json();
             })
             .then(data => {
@@ -327,16 +318,16 @@
                     
                     targetTimestamp = Date.now() + (totalDurationWindowSeconds * 1000);
                     
-                    initializeGlobalTimer();
-                    renderCurrentQuestionState();
+                    initializeTimer();
+                    renderQuestion();
                 } else {
-                    throw new Error(data.error || "Initialization anomaly.");
+                    throw new Error(data.error || "Initialization failed.");
                 }
             })
             .catch(err => {
                 statusSpinner.classList.add("d-none");
                 statusText.className = "fw-semibold text-danger";
-                statusText.textContent = err.message || "An initialization error occurred.";
+                statusText.textContent = err.message || "An error occurred during initialization.";
             });
         });
     </script>

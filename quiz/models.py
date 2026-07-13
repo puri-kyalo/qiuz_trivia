@@ -7,12 +7,11 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db.models import F
 from django.utils import timezone
-from django.conf import settings
 
 def normalize_kenyan_phone(phone_str):
     """
-    Normalizes variations of Kenyan phone formats into a unified 254XXXXXXXX structure.
-    Supports prefixes: 07..., 01..., 7..., 1..., +254...
+    Normalizes Kenyan phone formats to a standard 254XXXXXXXX format.
+    Handles 07..., 01..., 7..., 1..., and +254... variations.
     """
     if not phone_str:
         return None
@@ -29,15 +28,53 @@ def normalize_kenyan_phone(phone_str):
         raise ValidationError("Invalid Kenyan phone number format layout.")
         
     if not re.match(r'^254(7|1)\d{8}$', cleaned):
-        raise ValidationError("Phone number does not match E.164 compliance boundaries for Kenya.")
+        raise ValidationError("Phone number does not match Kenyan telecommunication boundaries.")
         
     return cleaned
 
 
+class QuizUserProfile(models.Model):
+    """
+    Tracks long-term user assets, participation metadata, and onboarding attribution.
+    """
+    id = models.BigAutoField(primary_key=True)
+    phone_number = models.CharField(max_length=20, unique=True, blank=True, null=True, db_index=True)
+    wallet_balance = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
+    tickets_available = models.IntegerField(default=0)
+    total_games_played = models.PositiveIntegerField(default=0)
+    
+    # Onboarding tracking
+    onboarding_staff_name = models.CharField(max_length=150, blank=True, null=True)
+    onboarding_staff_emp_number = models.CharField(max_length=50, blank=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        db_table = 'quiz_user_profile'
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(wallet_balance__gte=Decimal('0.00')),
+                name='wallet_balance_cannot_be_negative'
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.phone_number or 'Unassigned'} (Bal: KSh {self.wallet_balance})"
+
+    def has_active_payment_for_pool(self):
+        return self.tickets_available >= 1
+
+    def save(self, *args, **kwargs):
+        if self.phone_number:
+            try:
+                self.phone_number = normalize_kenyan_phone(self.phone_number)
+            except ValidationError:
+                pass
+        super().save(*args, **kwargs)
+
+
 class QuizPool(models.Model):
     """
-    Represents a rigid 3-hour tournament block hosting active traffic tiers.
-    Tracks entry fees collected and manages a strict 50/50 balance allocation ledger split.
+    Manages periodic game cycles and prize allocations.
     """
     id = models.BigAutoField(primary_key=True)
     start_time = models.DateTimeField(db_index=True)
@@ -47,8 +84,6 @@ class QuizPool(models.Model):
     retained_company_earnings = models.DecimalField(max_digits=12, decimal_places=2, default=Decimal('0.00'))
     total_entries = models.PositiveIntegerField(default=0)
     is_active = models.BooleanField(default=True, db_index=True)
-    
-    # Phase 5 Isolation Audit Flag
     requires_manual_audit = models.BooleanField(default=False, db_index=True)
 
     class Meta:
@@ -64,13 +99,9 @@ class QuizPool(models.Model):
         ]
 
     def __str__(self):
-        return f"Pool {self.id} ({self.start_time} to {self.end_time})"
+        return f"Pool {self.id} ({self.start_time.strftime('%Y-%m-%d %H:%M')} to {self.end_time.strftime('%Y-%m-%d %H:%M')})"
 
     def process_incoming_entry(self, entry_fee=Decimal('20.00')):
-        """
-        Executes an atomic 50/50 corporate/pool ledger split down at the database layer
-        to avoid race conditions during massive entry concurrency.
-        """
         half_allocation = entry_fee / Decimal('2.00')
         QuizPool.objects.filter(id=self.id).update(
             total_entry_fees_collected=F('total_entry_fees_collected') + entry_fee,
@@ -82,7 +113,7 @@ class QuizPool(models.Model):
 
 class QuestionBank(models.Model):
     """
-    Pre-seeded question banks categorized cleanly for balanced moderate-difficulty loads.
+    Question repository pre-allocated to specific quiz loops.
     """
     CATEGORY_CHOICES = [
         ('LOCAL_FOOTBALL', 'Local Kenyan Football'),
@@ -115,9 +146,7 @@ class QuestionBank(models.Model):
 
 class PaystackTransaction(models.Model):
     """
-    Acts as the single-use security barrier and player identity tracker.
-    Stores real M-Pesa registration details from the payment payload.
-    Tracks automated M-Pesa compensation processing loops.
+    Logs incoming transaction processing states from webhooks or manual status checks.
     """
     STATUS_CHOICES = [
         ('PENDING', 'Pending'),
@@ -133,9 +162,9 @@ class PaystackTransaction(models.Model):
         ('EVALUATED', 'Closed Pool / No Prize'),
     ]
 
-    # 💳 Existing Core Payment Fields
     paystack_reference = models.CharField(max_length=255, primary_key=True, db_index=True)
-    player_name = models.CharField(max_length=150, blank=True, null=True, help_text="Captured M-Pesa Name")
+    user_profile = models.ForeignKey(QuizUserProfile, on_delete=models.SET_NULL, null=True, blank=True, related_name='transactions')
+    player_name = models.CharField(max_length=150, blank=True, null=True)
     phone_number = models.CharField(max_length=20, db_index=True)
     email = models.EmailField(blank=True, null=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
@@ -146,36 +175,26 @@ class PaystackTransaction(models.Model):
     
     backend_metadata = models.JSONField(blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
-
-    # 🏆 Automated Compensation Management state 
-    payout_status = models.CharField(
-        max_length=20, 
-        choices=PAYOUT_CHOICES, 
-        default='UNPROCESSED', 
-        db_index=True,
-        help_text="Tracks clean handoffs across recurring 3-hour pools"
-    )
+    payout_status = models.CharField(max_length=20, choices=PAYOUT_CHOICES, default='UNPROCESSED', db_index=True)
 
     class Meta:
         db_table = 'quiz_paystack_transaction'
 
     def __str__(self):
-        return f"Ref: {self.paystack_reference} | Player: {self.player_name} ({self.status})"
+        return f"Ref: {self.paystack_reference} | Status: {self.status}"
 
     def save(self, *args, **kwargs):
-        """Auto-normalizes Kenyan numbers before database write"""
         if self.phone_number:
             try:
                 self.phone_number = normalize_kenyan_phone(self.phone_number)
-            except (ValidationError, NameError):
+            except ValidationError:
                 pass
         super().save(*args, **kwargs)
 
 
 class GameSession(models.Model):
     """
-    Maintains wall-clock verification tracking mapped back to a specific payment receipt.
-    Bypasses standard Django User schemas entirely.
+    Tracks runtime analytics and scores for validated tournament matches.
     """
     id = models.BigAutoField(primary_key=True)
     transaction_reference = models.OneToOneField(
@@ -193,19 +212,20 @@ class GameSession(models.Model):
 
     class Meta:
         db_table = 'quiz_game_session'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['transaction_reference', 'pool'],
+                name='unique_game_per_transaction_pool'
+            )
+        ]
 
     def __str__(self):
-        return f"Session {self.id} (Score: {self.score} in {self.duration_seconds}s)"
+        return f"Session {self.id} (Score: {self.score})"
 
-
-# ==========================================
-# PHASE 5 ADDITIONS: HIGH-INTEGRITY LEDGERS
-# ==========================================
 
 class PayoutEvent(models.Model):
     """
-    Maintains a strict, un-deletable record of all outgoing real-money rewards 
-    distributed to quiz winners to protect the platform balance sheets.
+    Audit log record tracking outgoing payouts issued to winners.
     """
     STATUS_CHOICES = [
         ('PENDING', 'Pending Processing'),
@@ -214,37 +234,12 @@ class PayoutEvent(models.Model):
     ]
 
     id = models.BigAutoField(primary_key=True)
-    transaction_receipt = models.ForeignKey(
-        'PaystackTransaction', 
-        on_delete=models.PROTECT, 
-        related_name='payout_records'
-    )
-    pool = models.ForeignKey(
-        'QuizPool', 
-        on_delete=models.PROTECT, 
-        related_name='payouts'
-    )
-    game_session = models.OneToOneField(
-        'GameSession', 
-        on_delete=models.PROTECT, 
-        related_name='payout_event'
-    )
-    amount = models.DecimalField(
-        max_digits=10, 
-        decimal_places=2,
-        validators=[MinValueValidator(Decimal('0.00'))]
-    )
-    status = models.CharField(
-        max_length=15, 
-        choices=STATUS_CHOICES, 
-        default='PENDING'
-    )
-    payout_reference = models.CharField(
-        max_length=64, 
-        unique=True, 
-        editable=False,
-        db_index=True
-    )
+    transaction_receipt = models.ForeignKey(PaystackTransaction, on_delete=models.PROTECT, related_name='payout_records')
+    pool = models.ForeignKey(QuizPool, on_delete=models.PROTECT, related_name='payouts')
+    game_session = models.OneToOneField(GameSession, on_delete=models.PROTECT, related_name='payout_event')
+    amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(Decimal('0.00'))])
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='PENDING')
+    payout_reference = models.CharField(max_length=64, unique=True, editable=False, db_index=True)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
 
     class Meta:
@@ -260,14 +255,12 @@ class PayoutEvent(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        player_ident = self.transaction_receipt.player_name or "Unknown"
-        return f"{self.payout_reference} - {player_ident} - KSh {self.amount}"
+        return f"{self.payout_reference} - KSh {self.amount}"
 
 
 class PlatformRevenueAccount(models.Model):
     """
-    A single-row tracking model used to hold platform financial accounts 
-    and absorb fractional micro-penny remainders from rounding ties.
+    Tracks system operational buffers and fractional micro-penny adjustments.
     """
     id = models.BigAutoField(primary_key=True)
     account_name = models.CharField(max_length=100, default="Administrative Platform Revenue")
@@ -278,7 +271,4 @@ class PlatformRevenueAccount(models.Model):
         db_table = 'quiz_platform_revenue'
 
     def __str__(self):
-        return f"{self.account_name} - Bal: KSh {self.balance}"
-    
-
-
+        return f"{self.account_name} - KSh {self.balance}"

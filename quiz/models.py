@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db.models import F
 from django.utils import timezone
+from django.conf import settings
 
 def normalize_kenyan_phone(phone_str):
     """
@@ -214,17 +215,17 @@ class PayoutEvent(models.Model):
 
     id = models.BigAutoField(primary_key=True)
     transaction_receipt = models.ForeignKey(
-        PaystackTransaction, 
+        'PaystackTransaction', 
         on_delete=models.PROTECT, 
         related_name='payout_records'
     )
     pool = models.ForeignKey(
-        QuizPool, 
+        'QuizPool', 
         on_delete=models.PROTECT, 
         related_name='payouts'
     )
     game_session = models.OneToOneField(
-        GameSession, 
+        'GameSession', 
         on_delete=models.PROTECT, 
         related_name='payout_event'
     )
@@ -278,3 +279,6 @@ class PlatformRevenueAccount(models.Model):
 
     def __str__(self):
         return f"{self.account_name} - Bal: KSh {self.balance}"
+    
+
+

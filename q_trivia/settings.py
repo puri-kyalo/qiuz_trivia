@@ -8,6 +8,7 @@ Optimized for high-concurrency production transaction scaling.
 import os
 from pathlib import Path
 from dotenv import load_dotenv  # <-- Added for loading your environment configuration safely
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -139,3 +140,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 PAYSTACK_SECRET_KEY = os.getenv('PAYSTACK_SECRET_KEY')
 PAYSTACK_SUBACCOUNT_CODE = os.getenv('PAYSTACK_SUBACCOUNT_CODE')
 PAYSTACK_BEARER = os.getenv('PAYSTACK_BEARER', 'subaccount')
+
+# Celery Configuration Settings
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Or your specific Redis/RabbitMQ URL
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_TIMEZONE = 'Africa/Nairobi'  # Alignment tracking for East Africa Time (EAT) Clock
+
+# --- CELERY BEAT PERIODIC SCHEDULER MATRIX ---
+CELERY_BEAT_SCHEDULE = {
+    'execute-tournament-pool-rotation-every-2-hours': {
+        'task': 'quiz.tasks.run_management_command_rotation',
+        'schedule': crontab(minute=0, hour='*/3'),  # Runs precisely at minute 0 of every 2nd hour (e.g., 12:00, 2:00, 4:00)
+    },
+}

@@ -1,7 +1,3 @@
-"""
-Django settings for q_trivia project.
-"""
-
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -9,13 +5,10 @@ from celery.schedules import crontab
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load environment variables from the .env file
 load_dotenv(BASE_DIR / '.env')
 
-# Quick-start development settings - unsuitable for production
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-*78ns3ncl37x=t6ie)w!%&zd6^wg(gh0uyhhk1eq@d5(m@dx1q')
 
-# Security settings for production
 DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 't')
 
 ALLOWED_HOSTS = [
@@ -24,21 +17,20 @@ ALLOWED_HOSTS = [
     if host.strip()
 ]
 
-# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
-    
-    # Apps
     'quiz.apps.QuizConfig',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -66,7 +58,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'q_trivia.wsgi.application'
 
-# Database Setup supporting standard connections or PgBouncer in transaction mode
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
 if DATABASE_URL:
@@ -78,7 +69,6 @@ if DATABASE_URL:
             conn_health_checks=True,
         )
     }
-    # Required option when using PgBouncer in transaction pooling mode
     DATABASES['default']['OPTIONS'] = {
         'DISABLE_SERVER_SIDE_CURSORS': True,
     }
@@ -90,7 +80,6 @@ else:
         }
     }
 
-# Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -98,30 +87,35 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Africa/Nairobi'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# HTTPS Security Policies
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    SECURE_HSTS_SECONDS = 31536000  # 1 Year
+    SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
 
-# External Providers
 PAYSTACK_SECRET_KEY = os.environ.get('PAYSTACK_SECRET_KEY')
 PAYSTACK_SUBACCOUNT_CODE = os.environ.get('PAYSTACK_SUBACCOUNT_CODE')
 PAYSTACK_BEARER = os.environ.get('PAYSTACK_BEARER', 'subaccount')
@@ -129,7 +123,6 @@ PAYSTACK_BEARER = os.environ.get('PAYSTACK_BEARER', 'subaccount')
 AFRICASTALKING_USERNAME = os.environ.get('AFRICASTALKING_USERNAME')
 AFRICASTALKING_API_KEY = os.environ.get('AFRICASTALKING_API_KEY')
 
-# Celery Configurations
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://localhost:6379/0')
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
 CELERY_TIMEZONE = 'Africa/Nairobi'

@@ -1,5 +1,5 @@
-# quiz/management/commands/seed_quiz_questions.py
 import os
+import time
 import logging
 from datetime import timedelta
 from django.core.management.base import BaseCommand
@@ -27,14 +27,12 @@ class QuizBatchSchema(BaseModel):
 
 
 class Command(BaseCommand):
-    help = "Seeds 100 trivia questions into the active quiz pool using Gemini."
+    help = "Seeds trivia questions into the active quiz pool using Gemini"
 
     def handle(self, *args, **options):
         current_now = timezone.now()
         
-        # 1. Fetch active pool or initialize fallback
         target_pool = QuizPool.objects.filter(is_active=True).order_by('-id').first()
-
         if not target_pool:
             self.stdout.write(self.style.WARNING("No active pool found. Creating fallback pool..."))
             target_pool = QuizPool.objects.create(
@@ -47,16 +45,21 @@ class Command(BaseCommand):
         
         allowed_categories = {"LOCAL_FOOTBALL", "KENYAN_HISTORY", "WORLD_FOOTBALL"}
         generated_questions = []
-        
         api_key = os.getenv("GEMINI_API_KEY")
 
         if api_key:
             try:
                 client = genai.Client(api_key=api_key)
-                total_batches = 5
+                # 3 batches of 20 gives us 60 questions, which keeps us safely under the 5 RPM limit
+                total_batches = 3
                 questions_per_batch = 20
                 
                 for batch_idx in range(total_batches):
+                    # Sleep 12 seconds between batches to avoid the Gemini free tier 429 rate limit
+                    if batch_idx > 0:
+                        self.stdout.write("Waiting 12 seconds to respect API rate limits...")
+                        time.sleep(12)
+
                     self.stdout.write(f"Fetching batch {batch_idx + 1} of {total_batches}...")
                     
                     prompt = f"""
@@ -80,7 +83,6 @@ class Command(BaseCommand):
                         ),
                     )
 
-                    # google-genai automatically exposes the validated object via response.parsed
                     parsed_data = response.parsed
                     batch_count = 0
                     
@@ -104,12 +106,12 @@ class Command(BaseCommand):
                 logger.error(f"Gemini generation error: {str(e)}")
                 self.stdout.write(self.style.ERROR(f"API generation failed: {str(e)}"))
 
-        # Fallback tracking if API key is missing or calls fail completely
+        # Use fallback questions if generation fails or API key is missing
         if not generated_questions:
-            self.stdout.write(self.style.WARNING("No questions generated. Injecting fallback repository defaults..."))
+            self.stdout.write(self.style.WARNING("No questions generated. Using fallback questions..."))
             generated_questions = self.get_fallback_questions() * 34 
 
-        # 2. Database transaction commit block
+        # Bulk write to database
         self.stdout.write("Saving questions to database...")
         with transaction.atomic():
             saved_counter = 0

@@ -1,9 +1,8 @@
-import hmac
-import hashlib
 import json
 import logging
 import random
 import uuid
+import threading
 from decimal import Decimal
 import requests
 
@@ -12,16 +11,14 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt, csrf_protect, ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 from django.db import transaction
+from django.db.models import F, Q
 from django.utils import timezone
 from django.urls import reverse
 from django.conf import settings
-from django.db.models import Q
-from django.core.management import call_command
-import threading
 from django_ratelimit.decorators import ratelimit
 
-from .models import QuizPool, PaystackTransaction, QuestionBank, GameSession
-from .paystack_utils import verify_paystack_transaction
+from .models import QuizPool, PaystackTransaction, QuestionBank, GameSession, StandbyQuestion
+from .paystack_utils import verify_paystack_transaction, verify_paystack_signature
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +45,7 @@ def initiate_payment(request):
     if not email:
         email = f"{phone}@trivia.com" if phone else "guest_player@trivia.com"
 
-    amount = 20.00
+    amount_kes = Decimal('20.00')
     payment_uuid = str(uuid.uuid4())
     url = "https://api.paystack.co/transaction/initialize"
     headers = {
@@ -60,7 +57,8 @@ def initiate_payment(request):
     
     payload = {
         "email": email,
-        "amount": int(amount * 100), 
+        "amount": int(amount_kes * 100), 
+        "currency": "KES",
         "callback_url": callback_url,
         "reference": payment_uuid, 
         "metadata": {
@@ -75,20 +73,23 @@ def initiate_payment(request):
         payload["bearer"] = getattr(settings, 'PAYSTACK_BEARER', 'subaccount')
     
     try:
-        response_raw = requests.post(url, json=payload, headers=headers)
+        response_raw = requests.post(url, json=payload, headers=headers, timeout=10)
         response = response_raw.json()
     except requests.exceptions.RequestException as e:
-        logger.error(f"Paystack initialization network gateway error: {e}")
+        logger.error(f"Paystack initialization network error: {e}")
         return render(request, 'quiz/play.html', {'error': 'Payment gateway unreachable.'})
     
     if response.get('status'):
+        digits_only = ''.join(filter(str.isdigit, str(phone)))
+        valid_phone = digits_only if len(digits_only) >= 9 else None
+
         PaystackTransaction.objects.create(
             paystack_reference=payment_uuid, 
             access_token=payment_uuid, 
             player_name=player_name,
-            phone_number=phone,
+            phone_number=valid_phone,
             email=email,
-            amount=amount,
+            amount=amount_kes,
             status='PENDING'
         )
         return redirect(response['data']['authorization_url'])
@@ -109,7 +110,7 @@ def paystack_callback(request):
     }
     
     try:
-        response = requests.get(url, headers=headers).json()
+        response = requests.get(url, headers=headers, timeout=10).json()
     except Exception as e:
         logger.error(f"Callback verification gateway failure: {e}")
         return redirect('quiz:payment_failed')
@@ -119,8 +120,15 @@ def paystack_callback(request):
         if tx:
             tx.status = 'SUCCESS'
             metadata = response['data'].get('metadata', {})
-            tx.player_name = metadata.get('player_name', tx.player_name)
-            tx.phone_number = metadata.get('phone_number', tx.phone_number)
+            
+            if metadata.get('player_name'):
+                tx.player_name = metadata.get('player_name')
+                
+            raw_phone = metadata.get('phone_number') or response['data'].get('customer', {}).get('phone') or ''
+            digits_only = ''.join(filter(str.isdigit, str(raw_phone)))
+            if len(digits_only) >= 9:
+                tx.phone_number = digits_only
+                
             tx.save()
             
             base_url = reverse('quiz:quiz_play')
@@ -136,7 +144,7 @@ def quiz_play_view(request):
         is_active=True,
         start_time__lte=current_now,
         end_time__gte=current_now
-    ).first()
+    ).order_by('-id').first()
 
     pool_id = active_pool.id if active_pool else 1
     target_timestamp_ms = int((timezone.now().timestamp() + GLOBAL_SESSION_LIMIT_SECONDS) * 1000)
@@ -153,6 +161,7 @@ def quiz_play_view(request):
 
 
 @require_POST
+@csrf_protect
 @ratelimit(key='ip', rate='5/m', block=True)
 def quiz_pay_view(request):
     try:
@@ -184,12 +193,15 @@ def quiz_pay_view(request):
             "metadata": {
                 "player_name": player_name,
                 "phone_number": phone
-            },
-            "subaccount": settings.PAYSTACK_SUBACCOUNT_CODE,
-            "bearer": settings.PAYSTACK_BEARER
+            }
         }
+
+        subaccount_code = getattr(settings, 'PAYSTACK_SUBACCOUNT_CODE', '')
+        if subaccount_code and subaccount_code.strip():
+            payload["subaccount"] = subaccount_code
+            payload["bearer"] = getattr(settings, 'PAYSTACK_BEARER', 'subaccount')
         
-        response = requests.post(paystack_url, json=payload, headers=headers)
+        response = requests.post(paystack_url, json=payload, headers=headers, timeout=10)
         response_data = response.json()
         
         if response_data.get('status'):
@@ -214,9 +226,9 @@ def quiz_results_view(request):
     context = {
         'score': session.score,
         'duration': round(session.duration_seconds, 2),
-        'player_name': session.transaction_reference.player_name,
+        'player_name': session.transaction_reference.player_name if session.transaction_reference else "Player",
         'is_disqualified': session.is_disqualified,
-        'pool_id': session.pool.id
+        'pool_id': session.pool.id if session.pool else None
     }
     return render(request, 'quiz/results.html', context)
 
@@ -224,20 +236,10 @@ def quiz_results_view(request):
 @csrf_exempt
 @require_POST
 def paystack_webhook(request):
-    signature = request.META.get('HTTP_X_PAYSTACK_SIGNATURE')
-    if not signature:
-        return HttpResponse("Missing security payload signature.", status=401)
-
-    # Hardened inline HMAC-SHA512 verification logic
-    computed_signature = hmac.new(
-        settings.PAYSTACK_SECRET_KEY.encode('utf-8'),
-        request.body,
-        hashlib.sha512
-    ).hexdigest()
-
-    if not hmac.compare_digest(computed_signature, signature):
-        logger.warning("Rejected webhook attempt: Cryptographic payload signature mismatch.")
-        return HttpResponse("Invalid cryptographic validation signature.", status=401)
+    signature = request.META.get('HTTP_X_PAYSTACK_SIGNATURE') or request.headers.get('X-Paystack-Signature')
+    if not verify_paystack_signature(request.body, signature):
+        logger.warning("Rejected webhook attempt: Signature mismatch.")
+        return HttpResponse("Invalid validation signature.", status=401)
 
     try:
         event_data = json.loads(request.body.decode('utf-8'))
@@ -250,29 +252,30 @@ def paystack_webhook(request):
     data = event_data.get('data', {})
     reference = data.get('reference')
     if not reference:
-        return HttpResponse("Missing unique identifier reference.", status=400)
+        return HttpResponse("Missing reference.", status=400)
 
     amount_minor = Decimal(str(data.get('amount', 0)))
     amount_kes = amount_minor / Decimal('100.00')
     customer_email = data.get('customer', {}).get('email')
     
-    authorization = data.get('authorization', {})
-    gateway_sender_name = authorization.get('sender_name') or data.get('metadata', {}).get('player_name')
-    raw_phone = data.get('customer', {}).get('phone') or data.get('metadata', {}).get('phone')
+    metadata = data.get('metadata', {}) or {}
+    customer = data.get('customer', {}) or {}
     
-    player_name = gateway_sender_name if gateway_sender_name else "M-Pesa Guest Subscriber"
-    fallback_phone = "".join(str(raw_phone).split()) if raw_phone else "00000000000"
+    player_name = metadata.get('player_name') or customer.get('first_name') or "M-Pesa Guest Subscriber"
+    raw_phone = metadata.get('phone_number') or customer.get('phone') or ''
+    digits_only = ''.join(filter(str.isdigit, str(raw_phone)))
+    phone_number = digits_only if len(digits_only) >= 9 else None
 
     with transaction.atomic():
         tx, created = PaystackTransaction.objects.select_for_update().get_or_create(
             paystack_reference=reference,
             defaults={
                 'player_name': player_name,
-                'phone_number': fallback_phone,
+                'phone_number': phone_number,
                 'email': customer_email,
                 'amount': amount_kes,
                 'status': 'PENDING',
-                'access_token': uuid.uuid4(),
+                'access_token': str(uuid.uuid4()),
                 'is_token_used': False
             }
         )
@@ -282,9 +285,10 @@ def paystack_webhook(request):
 
         tx.status = 'SUCCESS'
         tx.player_name = player_name
-        tx.phone_number = fallback_phone
+        if phone_number:
+            tx.phone_number = phone_number
         if not tx.access_token:
-            tx.access_token = uuid.uuid4()
+            tx.access_token = str(uuid.uuid4())
         tx.save()
 
         current_now = timezone.now()
@@ -292,15 +296,16 @@ def paystack_webhook(request):
             is_active=True, 
             start_time__lte=current_now, 
             end_time__gte=current_now
-        ).first()
+        ).order_by('-id').first()
 
-        if active_pool:
+        if active_pool and hasattr(active_pool, 'process_incoming_entry'):
             active_pool.process_incoming_entry(entry_fee=amount_kes)
 
     return JsonResponse({'status': 'fulfilled_successfully', 'access_token': str(tx.access_token)})
 
 
 @require_POST
+@csrf_protect
 @ratelimit(key='ip', rate='5/m', block=True)
 def verify_user_payment(request):
     try:
@@ -320,22 +325,23 @@ def verify_user_payment(request):
     prize_pool_share = amount_kes * Decimal('0.80')
 
     customer_email = verification_result.get('email')
-    gateway_sender_name = verification_result.get('sender_name') or verification_result.get('metadata', {}).get('player_name')
-    raw_phone = verification_result.get('phone') or verification_result.get('metadata', {}).get('phone')
+    metadata = verification_result.get('metadata', {}) or {}
     
-    player_name = gateway_sender_name if gateway_sender_name else "M-Pesa Guest Subscriber"
-    fallback_phone = "".join(str(raw_phone).split()) if raw_phone else "00000000000"
+    player_name = metadata.get('player_name') or "M-Pesa Guest Subscriber"
+    raw_phone = metadata.get('phone_number') or ''
+    digits_only = ''.join(filter(str.isdigit, str(raw_phone)))
+    phone_number = digits_only if len(digits_only) >= 9 else None
 
     with transaction.atomic():
         tx, created = PaystackTransaction.objects.select_for_update().get_or_create(
             paystack_reference=reference,
             defaults={
                 'player_name': player_name,
-                'phone_number': fallback_phone,
+                'phone_number': phone_number,
                 'email': customer_email,
                 'amount': amount_kes,
                 'status': 'PENDING',
-                'access_token': uuid.uuid4(),
+                'access_token': str(uuid.uuid4()),
                 'is_token_used': False
             }
         )
@@ -345,9 +351,10 @@ def verify_user_payment(request):
 
         tx.status = 'SUCCESS'
         tx.player_name = player_name
-        tx.phone_number = fallback_phone
+        if phone_number:
+            tx.phone_number = phone_number
         if not tx.access_token:
-            tx.access_token = uuid.uuid4()
+            tx.access_token = str(uuid.uuid4())
         tx.save()
 
         current_now = timezone.now()
@@ -355,15 +362,16 @@ def verify_user_payment(request):
             is_active=True, 
             start_time__lte=current_now, 
             end_time__gte=current_now
-        ).first()
+        ).order_by('-id').first()
 
-        if active_pool:
+        if active_pool and hasattr(active_pool, 'process_incoming_entry'):
             active_pool.process_incoming_entry(entry_fee=prize_pool_share)
 
     return JsonResponse({'success': True, 'status': 'SUCCESS', 'access_token': str(tx.access_token)})
 
 
 @require_POST
+@csrf_protect
 def start_quiz_session(request):
     try:
         body = json.loads(request.body.decode('utf-8'))
@@ -373,45 +381,6 @@ def start_quiz_session(request):
 
     if not token_str:
         return JsonResponse({'success': False, 'error': 'Access token required.'}, status=400)
-
-    current_now = timezone.now()
-    current_pool = QuizPool.objects.filter(
-        is_active=True,
-        start_time__lte=current_now,
-        end_time__gte=current_now
-    ).first()
-
-    if not current_pool:
-        current_pool = QuizPool.objects.filter(is_active=True).first()
-        if not current_pool:
-            current_pool = QuizPool.objects.create(
-                start_time=current_now - timezone.timedelta(minutes=5),
-                end_time=current_now + timezone.timedelta(hours=3),
-                is_active=True,
-                grand_prize_pool=Decimal('0.00'),
-                total_entries=0
-            )
-
-    # 3. Wrap this section in the thread lock context manager
-    with db_seed_lock:
-        all_question_ids = list(QuestionBank.objects.filter(pool=current_pool).values_list('id', flat=True))
-        
-        if len(all_question_ids) < 10:
-            try:
-                # Runs your 'quiz/management/commands/seed_quiz_questions.py' automatically
-                call_command('seed_quiz_questions')
-                
-                # Refresh our local ID list with the newly generated questions
-                all_question_ids = list(QuestionBank.objects.filter(pool=current_pool).values_list('id', flat=True))
-            except Exception as e:
-                return JsonResponse({
-                    'success': False, 
-                    'error': f'Failed to generate questions. Details: {str(e)}'
-                }, status=500)
-
-    # 4. Final safety check
-    if len(all_question_ids) < 10:
-        return JsonResponse({'success': False, 'error': 'Insufficient questions in the active pool.'}, status=400)
 
     with transaction.atomic():
         tx_query = PaystackTransaction.objects.select_for_update().filter(
@@ -434,7 +403,60 @@ def start_quiz_session(request):
         tx.is_token_used = True
         tx.save()
 
-        # Select exactly 10 questions from the 100 generated by the AI
+        current_now = timezone.now()
+        current_pool = QuizPool.objects.filter(
+            is_active=True,
+            start_time__lte=current_now,
+            end_time__gte=current_now
+        ).order_by('-id').first()
+
+        if not current_pool:
+            current_pool = QuizPool.objects.filter(is_active=True).order_by('-id').first()
+            if not current_pool:
+                current_pool = QuizPool.objects.create(
+                    start_time=current_now,
+                    end_time=current_now + timezone.timedelta(hours=3),
+                    is_active=True,
+                    grand_prize_pool=Decimal('0.00'),
+                    total_entries=0
+                )
+
+        with db_seed_lock:
+            all_question_ids = list(QuestionBank.objects.filter(pool=current_pool).values_list('id', flat=True))
+            
+            # If the pool has fewer than 10 questions, pull backup questions from StandbyQuestion
+            if len(all_question_ids) < 10:
+                needed = 100 - len(all_question_ids)
+                logger.info(f"Pool #{current_pool.id} has {len(all_question_ids)} questions. Pulling standby questions from DB.")
+                
+                standby_qs = StandbyQuestion.objects.order_by('times_used', '?')[:needed]
+                if standby_qs.exists():
+                    standby_ids = []
+                    new_pool_questions = []
+
+                    for sq in standby_qs:
+                        new_pool_questions.append(
+                            QuestionBank(
+                                pool=current_pool,
+                                question_text=sq.question_text,
+                                choice_1=sq.choice_1,
+                                choice_2=sq.choice_2,
+                                choice_3=sq.choice_3,
+                                choice_4=sq.choice_4,
+                                correct_choice=sq.correct_choice,
+                                category=getattr(sq, 'category', 'General')
+                            )
+                        )
+                        standby_ids.append(sq.id)
+
+                    QuestionBank.objects.bulk_create(new_pool_questions)
+                    StandbyQuestion.objects.filter(id__in=standby_ids).update(times_used=F('times_used') + 1)
+                    
+                all_question_ids = list(QuestionBank.objects.filter(pool=current_pool).values_list('id', flat=True))
+
+        if len(all_question_ids) < 10:
+            return JsonResponse({'success': False, 'error': 'Insufficient questions available in quiz pool.'}, status=400)
+
         selected_ids = random.sample(all_question_ids, 10)
         questions = list(QuestionBank.objects.filter(id__in=selected_ids).only(
             'id', 'question_text', 'choice_1', 'choice_2', 'choice_3', 'choice_4', 'category'
@@ -453,7 +475,7 @@ def start_quiz_session(request):
         'id': q.id,
         'question_text': q.question_text,
         'choices': [q.choice_1, q.choice_2, q.choice_3, q.choice_4],
-        'category': q.category
+        'category': getattr(q, 'category', '')
     } for q in questions]
 
     return JsonResponse({
@@ -464,8 +486,10 @@ def start_quiz_session(request):
         'player_name': getattr(tx, 'player_name', 'Player')
     })
 
+
 @require_POST
-@ratelimit(key='post:session_id', rate='1/m', block=True)
+@csrf_protect
+@ratelimit(key='ip', rate='10/m', block=True)
 def submit_quiz_answers(request):
     try:
         body = json.loads(request.body.decode('utf-8'))

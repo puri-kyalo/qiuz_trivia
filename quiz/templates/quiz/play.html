@@ -17,7 +17,7 @@
         }
         .choice-btn {
             text-align: left;
-            padding: 1rem 1.25rem;
+            padding: 0.875rem 1rem;
             font-weight: 500;
             transition: all 0.15s ease-in-out;
             border: 2px solid #dee2e6;
@@ -48,76 +48,82 @@
 <body>
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 
-    <div class="container my-3 my-md-5" style="max-width: 680px;">
+    <div class="container my-2 my-md-4 px-3" style="max-width: 600px;">
         
-        <div id="payment-gate-container" class="card shadow-sm border-0 bg-white rounded-3 mb-4 p-4 d-none">
-            <h3 class="h4 text-dark mb-3 fw-bold">Tournament Registration</h3>
-            <p class="text-muted small">Enter your details below to buy a match ticket via M-Pesa.</p>
+        <!-- Payment Container -->
+        <div id="payment-gate-container" class="card shadow-sm border-0 bg-white rounded-3 mb-3 p-3 p-md-4 d-none">
+            <h3 class="h5 h4-md text-dark mb-2 fw-bold">Tournament Registration</h3>
+            <p class="text-muted small mb-3">Enter your details below to buy a match ticket via M-Pesa.</p>
             <form action="{% url 'quiz:initiate_payment' %}" method="POST">
                 {% csrf_token %}
                 <div class="mb-3">
-                    <label class="form-label fw-semibold">Player Name</label>
-                    <input type="text" name="player_name" class="form-control" placeholder="e.g. John" required>
+                    <label class="form-label fw-semibold small">Player Name</label>
+                    <input type="text" name="player_name" class="form-control form-control-lg fs-6" placeholder="e.g. John" required>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label fw-semibold">M-Pesa Phone Number</label>
-                    <input type="tel" name="phone_number" class="form-control" placeholder="e.g. 0712345678" required>
+                    <label class="form-label fw-semibold small">M-Pesa Phone Number</label>
+                    <input type="tel" name="phone_number" class="form-control form-control-lg fs-6" placeholder="e.g. 0712345678" required>
                 </div>
-                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">Pay KSh 20.00 to Play</button>
+                <button type="submit" class="btn btn-primary w-100 py-2.5 fw-bold">Pay KSh 20.00 to Play</button>
             </form>
         </div>
 
+        <!-- Quiz Workspace -->
         <div id="quiz-play-workspace" class="d-none">
-            <div id="status-notification-box" class="alert alert-info shadow-sm border-0 mb-4" role="alert">
+            
+            <!-- Status Notification Banner -->
+            <div id="status-notification-box" class="alert alert-info shadow-sm border-0 mb-3 p-3" role="alert">
                 <div class="d-flex align-items-center">
-                    <div class="spinner-border spinner-border-sm text-info me-3" role="status" id="status-spinner"></div>
-                    <span id="status-message-text" class="fw-semibold text-dark">Connecting to server...</span>
+                    <div class="spinner-border spinner-border-sm text-info me-2 flex-shrink-0" role="status" id="status-spinner"></div>
+                    <span id="status-message-text" class="fw-semibold text-dark small">Connecting to server...</span>
                 </div>
             </div>
 
+            <!-- Active Quiz Interface -->
             <div id="active-quiz-interface">
-                <div class="card shadow-sm border-0 mb-4 bg-white rounded-3">
-                    <div class="card-body p-4">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <span id="question-counter" class="badge bg-primary fs-6 px-3 py-2">Question 1 of --</span>
-                            <span id="countdown-timer" class="badge bg-danger fs-6 px-3 py-2 fw-monospace">Time Remaining: --:--</span>
+                <div class="card shadow-sm border-0 mb-3 bg-white rounded-3">
+                    <div class="card-body p-3">
+                        <div class="d-flex flex-row justify-content-between align-items-center gap-2 mb-3">
+                            <span id="question-counter" class="badge bg-primary fs-6 px-2.5 py-2 text-wrap text-center flex-fill">Question 1 of --</span>
+                            <span id="countdown-timer" class="badge bg-danger fs-6 px-2.5 py-2 fw-monospace text-wrap text-center flex-fill">Time Remaining: --:--</span>
                         </div>
-                        <div class="progress" style="height: 10px;" role="progressbar" aria-label="Progress tracking" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                        <div class="progress" style="height: 8px;" role="progressbar" aria-label="Progress tracking" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
                             <div id="progress-bar" class="progress-bar bg-danger progress-bar-striped progress-bar-animated" style="width: 100%"></div>
                         </div>
                     </div>
                 </div>
 
-                <div class="card shadow-sm border-0 bg-white rounded-3 mb-5">
-                    <div id="question-block-container" class="card-body p-4 p-md-5">
-                        <h3 id="quiz-question-display-text" class="h4 text-dark mb-4 lh-base fw-bold">
+                <div class="card shadow-sm border-0 bg-white rounded-3 mb-4">
+                    <div id="question-block-container" class="card-body p-3 p-md-4">
+                        <h3 id="quiz-question-display-text" class="h5 h4-md text-dark mb-3 lh-base fw-bold">
                             Loading your quiz questions...
                         </h3>
-                        <div class="d-grid gap-3" id="quiz-options-wrapper"></div>
+                        <div class="d-grid gap-2" id="quiz-options-wrapper"></div>
                     </div>
                 </div>
             </div>
 
-            <div id="inline-results-display" class="card shadow-sm border-0 bg-white rounded-3 p-4 p-md-5 text-center d-none">
-                <div class="mb-3 text-warning" style="font-size: 3.5rem; line-height: 1;">
+            <!-- Results Interface -->
+            <div id="inline-results-display" class="card shadow-sm border-0 bg-white rounded-3 p-4 text-center d-none">
+                <div class="mb-2 text-warning" style="font-size: 3rem; line-height: 1;">
                     <i class="bi bi-trophy-fill"></i>
                 </div>
-                <h2 class="fw-bold text-dark mb-2">Quiz Submitted!</h2>
-                <p class="text-muted small mb-4 mx-auto" style="max-width: 420px;">
+                <h2 class="fw-bold text-dark h4 mb-2">Quiz Submitted!</h2>
+                <p class="text-muted small mb-4 mx-auto" style="max-width: 360px;">
                     Your entry has been processed and successfully recorded.
                 </p>
                 
-                <div class="row g-3 justify-content-center mx-auto" style="max-width: 440px;">
+                <div class="row g-2 justify-content-center mx-auto" style="max-width: 360px;">
                     <div class="col-6">
                         <div class="p-3 rounded-3 border" style="background-color: #f8fafd;">
-                            <span class="d-block text-muted text-uppercase fw-semibold mb-1" style="font-size: 11px; letter-spacing: 0.5px;">Final Score</span>
-                            <strong id="results-score-value" class="fs-3 text-primary d-block fw-bold">0/10</strong>
+                            <span class="d-block text-muted text-uppercase fw-semibold mb-1" style="font-size: 10px; letter-spacing: 0.5px;">Final Score</span>
+                            <strong id="results-score-value" class="fs-4 text-primary d-block fw-bold">0/10</strong>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="p-3 rounded-3 border" style="background-color: #f8fafd;">
-                            <span class="d-block text-muted text-uppercase fw-semibold mb-1" style="font-size: 11px; letter-spacing: 0.5px;">Time Taken</span>
-                            <strong id="results-duration-value" class="fs-3 text-primary d-block fw-monospace fw-bold">0.0s</strong>
+                            <span class="d-block text-muted text-uppercase fw-semibold mb-1" style="font-size: 10px; letter-spacing: 0.5px;">Time Taken</span>
+                            <strong id="results-duration-value" class="fs-4 text-primary d-block fw-monospace fw-bold">0.0s</strong>
                         </div>
                     </div>
                 </div>
@@ -125,11 +131,12 @@
         </div>
     </div>
 
+    <!-- Submission Overlay -->
     <div id="submission-overlay" class="d-none">
         <div class="text-center text-white px-3">
-            <div class="spinner-border text-light mb-4" style="width: 3.5rem; height: 3.5rem;" role="status"></div>
-            <h2 id="overlay-title" class="fw-bold tracking-tight mb-2">Time is up!</h2>
-            <p id="overlay-subtitle" class="lead text-white-50">Submitting your responses safely...</p>
+            <div class="spinner-border text-light mb-3" style="width: 3rem; height: 3rem;" role="status"></div>
+            <h2 id="overlay-title" class="fw-bold h4 mb-2">Time is up!</h2>
+            <p id="overlay-subtitle" class="small text-white-50">Submitting your responses safely...</p>
         </div>
     </div>
 
@@ -155,6 +162,7 @@
             const userAnswersPayload = {};
             let globalTimerIntervalId = null;
             let executionLockoutActive = false;
+            let isSubmitting = false;
             
             let targetTimestamp = null;
             let totalDurationWindowSeconds = null;
@@ -178,6 +186,22 @@
             const resultsInterface = document.getElementById("inline-results-display");
             const scoreDisplay = document.getElementById("results-score-value");
             const durationDisplay = document.getElementById("results-duration-value");
+
+            // --- Page Unload / Reload Anti-Abandonment Handlers ---
+            function enableUnloadGuard() {
+                window.addEventListener('beforeunload', handleBeforeUnload);
+            }
+
+            function disableUnloadGuard() {
+                isSubmitting = true;
+                window.removeEventListener('beforeunload', handleBeforeUnload);
+            }
+
+            function handleBeforeUnload(event) {
+                if (isSubmitting) return;
+                event.preventDefault();
+                event.returnValue = ''; // Shows browser default alert modal
+            }
 
             // Integrity Protections
             [questionContainer, document.body].forEach(element => {
@@ -234,7 +258,7 @@
                 activeQuestionObj.choices.forEach((choiceString, idx) => {
                     const choiceIndex = idx + 1;
                     const optionButton = document.createElement("button");
-                    optionButton.className = "btn btn-light choice-btn text-start w-100 rounded-3 shadow-sm border text-dark fw-medium";
+                    optionButton.className = "btn btn-light choice-btn text-start w-100 rounded-3 shadow-sm border text-dark fw-medium small";
                     optionButton.textContent = choiceString;
                     optionButton.setAttribute("data-choice-idx", choiceIndex);
                     
@@ -245,6 +269,10 @@
 
             function handleUserSelection(questionId, choiceIndex) {
                 if (executionLockoutActive) return;
+
+                // Disable option buttons immediately to prevent rapid double-clicks
+                document.querySelectorAll(".choice-btn").forEach(btn => btn.disabled = true);
+
                 userAnswersPayload[questionId] = choiceIndex;
                 currentQuestionIndex++;
                 renderQuestion();
@@ -254,6 +282,9 @@
                 if (executionLockoutActive) return;
                 executionLockoutActive = true;
                 
+                // Unregister the unload guard so final payload posts without warning popups
+                disableUnloadGuard();
+
                 clearInterval(globalTimerIntervalId);
                 document.querySelectorAll(".choice-btn").forEach(btn => btn.disabled = true);
                 
@@ -318,6 +349,9 @@
                     
                     targetTimestamp = Date.now() + (totalDurationWindowSeconds * 1000);
                     
+                    // Activate unload protection right when game becomes active
+                    enableUnloadGuard();
+                    
                     initializeTimer();
                     renderQuestion();
                 } else {
@@ -326,7 +360,7 @@
             })
             .catch(err => {
                 statusSpinner.classList.add("d-none");
-                statusText.className = "fw-semibold text-danger";
+                statusText.className = "fw-semibold text-danger small";
                 statusText.textContent = err.message || "An error occurred during initialization.";
             });
         });

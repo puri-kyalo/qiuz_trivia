@@ -123,13 +123,15 @@ PAYSTACK_BEARER = os.environ.get('PAYSTACK_BEARER', 'subaccount')
 AFRICASTALKING_USERNAME = os.environ.get('AFRICASTALKING_USERNAME')
 AFRICASTALKING_API_KEY = os.environ.get('AFRICASTALKING_API_KEY')
 
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://localhost:6379/0')
 CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
 CELERY_TIMEZONE = 'Africa/Nairobi'
 
 CELERY_BEAT_SCHEDULE = {
     'rotate-quiz-pool-every-3-hours': {
-        'task': 'quiz.tasks.run_management_command_rotation',
+        'task': 'quiz.tasks.run_management_command_rotation',  # <--- Matches quiz/tasks.py
         'schedule': crontab(minute=0, hour='*/3'),
     },
 }

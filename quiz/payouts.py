@@ -16,6 +16,10 @@ def execute_automated_pool_payout():
     Evaluates the active pool, identifies highest scoring players (with time tiebreakers),
     distributes payouts via Paystack Mobile Money (M-Pesa), and starts a fresh pool.
     """
+    winners = []
+    payout_per_winner = Decimal('0.00')
+    highest_score = 0
+
     # Use select_for_update inside an atomic block to prevent double-payout race conditions
     with transaction.atomic():
         active_pool = QuizPool.objects.select_for_update().filter(is_active=True).order_by('-start_time').first()
@@ -45,12 +49,18 @@ def execute_automated_pool_payout():
         # Locate the highest score in this pool
         highest_score = active_transactions.aggregate(models.Max('game_session__score'))['game_session__score__max']
         if highest_score is None:
+            active_pool.is_active = False
+            active_pool.save()
+            start_next_pool()
             return
 
         # Tie-breaker logic: select fastest duration among players with the highest score
         top_scorers = active_transactions.filter(game_session__score=highest_score)
         contenders = list(top_scorers.order_by('game_session__duration_seconds'))
         if not contenders:
+            active_pool.is_active = False
+            active_pool.save()
+            start_next_pool()
             return
 
         fastest_time = contenders[0].game_session.duration_seconds
@@ -60,7 +70,8 @@ def execute_automated_pool_payout():
         active_transactions.exclude(paystack_reference__in=[w.paystack_reference for w in winners]).update(payout_status='EVALUATED')
 
         number_of_winners = len(winners)
-        payout_per_winner = (total_prize_pot / Decimal(str(number_of_winners))).quantize(Decimal('0.01'), rounding=ROUND_DOWN)
+        if number_of_winners > 0:
+            payout_per_winner = (total_prize_pot / Decimal(str(number_of_winners))).quantize(Decimal('0.01'), rounding=ROUND_DOWN)
 
     # Trigger API payouts outside of the DB lock transaction block to prevent long-running table locks
     headers = {
@@ -68,7 +79,7 @@ def execute_automated_pool_payout():
         "Content-Type": "application/json",
     }
 
-    if payout_per_winner > 0:
+    if payout_per_winner > 0 and winners:
         for winner in winners:
             winner.payout_status = 'PENDING'
             winner.save()
@@ -114,7 +125,7 @@ def execute_automated_pool_payout():
                     headers=headers
                 ).json()
                 
-                if trans_res.get('status') and trans_res['data']['status'] in ['success', 'pending']:
+                if trans_res.get('status') and trans_res.get('data', {}).get('status') in ['success', 'pending']:
                     winner.payout_status = 'PAID'
                 else:
                     winner.payout_status = 'FAILED'

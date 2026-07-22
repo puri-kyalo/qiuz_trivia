@@ -1,152 +1,204 @@
-import os
-import time
+import json
 import logging
-from datetime import timedelta
+from decimal import Decimal
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from django.db import transaction
-from google import genai
-from google.genai import types
-from pydantic import BaseModel, Field
-from typing import List
-from quiz.models import QuizPool, QuestionBank
+from django.db.models import F
+from django.conf import settings
+
+from quiz.models import QuizPool, QuestionBank, StandbyQuestion
 
 logger = logging.getLogger(__name__)
 
-class SingleQuestionSchema(BaseModel):
-    question_text: str = Field(description="Trivia question text. Target medium difficulty.")
-    choice_1: str = Field(description="Multiple-choice option 1.")
-    choice_2: str = Field(description="Multiple-choice option 2.")
-    choice_3: str = Field(description="Multiple-choice option 3.")
-    choice_4: str = Field(description="Multiple-choice option 4.")
-    correct_choice: int = Field(description="Correct choice index: 1, 2, 3, or 4.")
-    category: str = Field(description="Must be exactly 'LOCAL_FOOTBALL', 'KENYAN_HISTORY', or 'WORLD_FOOTBALL'.")
-
-class QuizBatchSchema(BaseModel):
-    questions: List[SingleQuestionSchema]
-
 
 class Command(BaseCommand):
-    help = "Seeds trivia questions into the active quiz pool using Gemini"
+    help = "Seeds quiz questions into the active QuizPool with standby database fallback."
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--count',
+            type=int,
+            default=200,
+            help='Number of questions required for the pool.'
+        )
 
     def handle(self, *args, **options):
-        current_now = timezone.now()
-        
-        target_pool = QuizPool.objects.filter(is_active=True).order_by('-id').first()
-        if not target_pool:
-            self.stdout.write(self.style.WARNING("No active pool found. Creating fallback pool..."))
-            target_pool = QuizPool.objects.create(
+        count = options['count']
+        now = timezone.now()
+
+        # Always target the latest active pool by ordering descending by ID
+        active_pool = QuizPool.objects.filter(
+            is_active=True,
+            start_time__lte=now,
+            end_time__gte=now
+        ).order_by('-id').first()
+
+        # Fallback if no active pool covers the current timestamp
+        if not active_pool:
+            # Ensure older active pools are deactivated first
+            QuizPool.objects.filter(is_active=True).update(is_active=False)
+            
+            active_pool = QuizPool.objects.create(
+                start_time=now,
+                end_time=now + timezone.timedelta(hours=3),  # Aligned to 3-hour rotation
                 is_active=True,
-                start_time=current_now - timedelta(days=1),
-                end_time=current_now + timedelta(days=7)
+                grand_prize_pool=Decimal('0.00'),
+                total_entries=0
+            )
+            self.stdout.write(
+                self.style.WARNING(f"No active pool found. Created new Pool #{active_pool.id}.")
             )
 
-        self.stdout.write(f"Seeding questions for Pool ID: {target_pool.id}")
-        
-        allowed_categories = {"LOCAL_FOOTBALL", "KENYAN_HISTORY", "WORLD_FOOTBALL"}
-        generated_questions = []
-        api_key = os.getenv("GEMINI_API_KEY")
+        # 1. Attempt remote fetch via Gemini
+        questions_data = self._fetch_remote_questions(count)
 
-        if api_key:
-            try:
-                client = genai.Client(api_key=api_key)
-                # 3 batches of 20 gives us 60 questions, which keeps us safely under the 5 RPM limit
-                total_batches = 3
-                questions_per_batch = 20
-                
-                for batch_idx in range(total_batches):
-                    # Sleep 12 seconds between batches to avoid the Gemini free tier 429 rate limit
-                    if batch_idx > 0:
-                        self.stdout.write("Waiting 12 seconds to respect API rate limits...")
-                        time.sleep(12)
+        # 2. Top-up or fallback using standby database if remote fetch didn't yield enough
+        if not questions_data or len(questions_data) < count:
+            existing_count = len(questions_data) if questions_data else 0
+            needed = count - existing_count
 
-                    self.stdout.write(f"Fetching batch {batch_idx + 1} of {total_batches}...")
-                    
-                    prompt = f"""
-                    Generate exactly {questions_per_batch} unique trivia questions distributed evenly across:
-                    1. LOCAL_FOOTBALL (Kenyan Premier League, Mashemeji Derby, Harambee Stars milestones)
-                    2. KENYAN_HISTORY (Historical milestones, independence era, cultural history)
-                    3. WORLD_FOOTBALL (Global icons, Premier League, UEFA Champions League, World Cups)
-
-                    Requirements:
-                    - Strict medium difficulty level.
-                    - Ensure questions are factually accurate and unique.
-                    """
-
-                    response = client.models.generate_content(
-                        model='gemini-2.5-flash',
-                        contents=prompt,
-                        config=types.GenerateContentConfig(
-                            response_mime_type="application/json",
-                            response_schema=QuizBatchSchema,
-                            temperature=0.7,
-                        ),
-                    )
-
-                    parsed_data = response.parsed
-                    batch_count = 0
-                    
-                    if parsed_data and hasattr(parsed_data, 'questions'):
-                        for item in parsed_data.questions:
-                            if item.correct_choice in [1, 2, 3, 4] and item.category in allowed_categories:
-                                generated_questions.append({
-                                    'question_text': item.question_text,
-                                    'choice_1': item.choice_1,
-                                    'choice_2': item.choice_2,
-                                    'choice_3': item.choice_3,
-                                    'choice_4': item.choice_4,
-                                    'correct_choice': item.correct_choice,
-                                    'category': item.category
-                                })
-                                batch_count += 1
-                    
-                    self.stdout.write(self.style.SUCCESS(f"Collected {batch_count} valid records from batch {batch_idx + 1}."))
-                        
-            except Exception as e:
-                logger.error(f"Gemini generation error: {str(e)}")
-                self.stdout.write(self.style.ERROR(f"API generation failed: {str(e)}"))
-
-        # Use fallback questions if generation fails or API key is missing
-        if not generated_questions:
-            self.stdout.write(self.style.WARNING("No questions generated. Using fallback questions..."))
-            generated_questions = self.get_fallback_questions() * 34 
-
-        # Bulk write to database
-        self.stdout.write("Saving questions to database...")
-        with transaction.atomic():
-            saved_counter = 0
-            for q_data in generated_questions:
-                QuestionBank.objects.create(
-                    pool=target_pool,
-                    question_text=q_data['question_text'],
-                    choice_1=q_data['choice_1'],
-                    choice_2=q_data['choice_2'],
-                    choice_3=q_data['choice_3'],
-                    choice_4=q_data['choice_4'],
-                    correct_choice=q_data['correct_choice'],
-                    category=q_data['category']
+            self.stdout.write(
+                self.style.WARNING(
+                    f"Remote API provided {existing_count}/{count} questions. "
+                    f"Pulling remaining {needed} from standby database..."
                 )
-                saved_counter += 1
-                if saved_counter >= 100:
-                    break
-        
-        self.stdout.write(self.style.SUCCESS(f"Successfully populated {saved_counter} questions into Pool {target_pool.id}."))
+            )
 
-    def get_fallback_questions(self):
-        return [
-            {
-                "question_text": "Which club won the FKF Premier League title in the 2022/2023 season?",
-                "choice_1": "Gor Mahia", "choice_2": "AFC Leopards", "choice_3": "Tusker FC", "choice_4": "Bandari FC",
-                "correct_choice": 1, "category": "LOCAL_FOOTBALL"
-            },
-            {
-                "question_text": "In which year did Kenya officially adopt its current constitution?",
-                "choice_1": "1963", "choice_2": "2002", "choice_3": "2010", "choice_4": "2005",
-                "correct_choice": 3, "category": "KENYAN_HISTORY"
-            },
-            {
-                "question_text": "Which country won the FIFA World Cup held in the year 2022?",
-                "choice_1": "France", "choice_2": "Argentina", "choice_3": "Croatia", "choice_4": "Morocco",
-                "correct_choice": 2, "category": "WORLD_FOOTBALL"
-            }
-        ]
+            standby_questions = self._get_db_standby(needed)
+            if questions_data:
+                questions_data.extend(standby_questions)
+            else:
+                questions_data = standby_questions
+
+        if not questions_data:
+            self.stdout.write(
+                self.style.ERROR("No standby questions found in database. Aborting.")
+            )
+            return
+
+        # 3. Bulk insert questions into QuestionBank
+        with transaction.atomic():
+            created_objects = QuestionBank.objects.bulk_create([
+                QuestionBank(
+                    pool=active_pool,
+                    question_text=q['question_text'],
+                    choice_1=q['choice_1'],
+                    choice_2=q['choice_2'],
+                    choice_3=q['choice_3'],
+                    choice_4=q['choice_4'],
+                    correct_choice=str(q['correct_choice']),
+                    category=q.get('category', 'General')
+                )
+                for q in questions_data
+            ])
+
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Successfully added {len(created_objects)} questions to Pool #{active_pool.id}."
+            )
+        )
+
+    def _fetch_remote_questions(self, target_count):
+        api_key = getattr(settings, 'GEMINI_API_KEY', None)
+        if not api_key:
+            return None
+
+        try:
+            from google import genai
+            from google.genai import types
+
+            client = genai.Client(api_key=api_key)
+            all_questions = []
+            batch_size = 50
+
+            while len(all_questions) < target_count:
+                remaining = target_count - len(all_questions)
+                current_batch = min(batch_size, remaining)
+
+                prompt = f"""
+                Generate exactly {current_batch} unique multiple choice trivia questions in raw JSON format.
+
+                CATEGORIES & REQUIREMENTS:
+                1. Split questions evenly across these three categories only:
+                   - "Local Kenyan Football" (FKF Premier League, Harambee Stars, Gor Mahia, AFC Leopards, CECAFA context)
+                   - "Kenyan History" (Struggle for independence, historic political events, leaders, constitutional milestones)
+                   - "World General Football" (FIFA World Cup, UEFA Champions League, international stars, historic club records)
+
+                2. DIFFICULTY:
+                   - STRICT MEDIUM DIFFICULTY. Target trivia enthusiasts — avoid basic questions and obscure niche facts.
+
+                3. JSON FORMAT:
+                [
+                  {{
+                    "question_text": "Which club won the FKF Premier League title in 2024?",
+                    "choice_1": "Gor Mahia",
+                    "choice_2": "AFC Leopards",
+                    "choice_3": "Tusker FC",
+                    "choice_4": "Police FC",
+                    "correct_choice": "1",
+                    "category": "Local Kenyan Football"
+                  }}
+                ]
+
+                Rules:
+                - correct_choice must be a string ("1", "2", "3", or "4").
+                - category must be one of: "Local Kenyan Football", "Kenyan History", or "World General Football".
+                """
+
+                response = client.models.generate_content(
+                    model='gemini-2.5-flash',
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                        temperature=0.7,
+                    ),
+                )
+
+                if response and response.text:
+                    data = json.loads(response.text)
+                    if isinstance(data, list):
+                        all_questions.extend(data)
+                    else:
+                        break
+                else:
+                    break
+
+            return all_questions[:target_count] if all_questions else None
+
+        except Exception as e:
+            logger.error(f"Failed to fetch remote questions: {str(e)}")
+
+        return None
+
+    def _get_db_standby(self, count):
+        standby_qs = StandbyQuestion.objects.order_by('times_used', '?')[:count]
+
+        if standby_qs.count() < count:
+            self.stdout.write(
+                self.style.ERROR(
+                    f"Warning: Standby table has {standby_qs.count()} questions (requested {count})."
+                )
+            )
+
+        questions = []
+        standby_ids = []
+
+        for q in standby_qs:
+            questions.append({
+                'question_text': q.question_text,
+                'choice_1': q.choice_1,
+                'choice_2': q.choice_2,
+                'choice_3': q.choice_3,
+                'choice_4': q.choice_4,
+                'correct_choice': q.correct_choice,
+                'category': q.category,
+            })
+            standby_ids.append(q.id)
+
+        if standby_ids:
+            StandbyQuestion.objects.filter(id__in=standby_ids).update(
+                times_used=F('times_used') + 1
+            )
+
+        return questions

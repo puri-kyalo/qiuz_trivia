@@ -5,6 +5,7 @@ from django.core.management import call_command
 
 logger = logging.getLogger(__name__)
 
+
 @shared_task(
     bind=True, 
     max_retries=5, 
@@ -15,7 +16,6 @@ def send_victory_sms(self, normalized_phone, player_name, score, prize_share_str
     """
     Sends an SMS victory notification to tournament winners via Africa's Talking.
     """
-    # Clean phone number and convert to E.164 format
     sanitized_phone = str(normalized_phone).strip()
     if sanitized_phone.startswith('254'):
         e164_phone = f"+{sanitized_phone}"
@@ -56,49 +56,27 @@ def send_victory_sms(self, normalized_phone, player_name, score, prize_share_str
         raise self.retry(exc=exc)
 
 
-@shared_task
-def seed_questions_for_pool(pool_id):
+@shared_task(bind=True, max_retries=3)
+def run_management_command_rotation(self):
     """
-    Copies a baseline set of historical questions to populate a newly created quiz pool.
+    Periodic task triggered by Celery Beat every 3 hours.
+    Rotates active quiz pools and seeds 200 questions via Gemini AI.
     """
-    from quiz.models import QuizPool, QuestionBank
+    logger.info("Executing periodic 3-hour quiz pool rotation & AI seeding...")
     try:
-        pool = QuizPool.objects.get(id=pool_id)
-        
-        # Pull 10 previous questions to use as a baseline pool template
-        base_questions = QuestionBank.objects.filter(pool_id__lt=pool_id)[:10]
-        
-        if not base_questions.exists():
-            logger.warning(f"No historical questions found to seed Pool ID: {pool_id}")
-            return False
-            
-        new_questions = [
-            QuestionBank(
-                pool=pool,
-                question_text=q.question_text,
-                choice_1=q.choice_1,
-                choice_2=q.choice_2,
-                choice_3=q.choice_3,
-                choice_4=q.choice_4,
-                correct_choice=q.correct_choice,
-                category=q.category
-            )
-            for q in base_questions
-        ]
-        
-        QuestionBank.objects.bulk_create(new_questions)
-        logger.info(f"Successfully cloned {len(new_questions)} baseline questions into Pool ID: {pool_id}")
-        return True
-    except Exception as e:
-        logger.error(f"Error seeding questions for pool {pool_id}: {str(e)}")
-        return False
+        # 1. Rotate the active pool if you have a rotation command
+        try:
+            call_command('rotate_quiz_pool')
+        except Exception as e:
+            logger.warning(f"rotate_quiz_pool command skipped or failed: {e}")
 
+        # 2. Seed 200 dynamic questions into the active pool
+        call_command('seed_quiz_questions', count=200)
 
-@shared_task
-def run_management_command_rotation():
-    """
-    Periodic task triggered by Celery Beat to rotate active quiz pools.
-    """
-    logger.info("Executing periodic quiz pool rotation command.")
-    call_command('rotate_quiz_pool')
-    return "ROTATION_COMPLETE"
+        logger.info("Successfully executed 3-hour pool rotation and seeded 200 questions.")
+        return "ROTATION_AND_SEEDING_COMPLETE"
+
+    except Exception as exc:
+        logger.error(f"Error during pool rotation/seeding task: {str(exc)}")
+        # Retry in 5 minutes if something fails (e.g., temporary network glitch)
+        raise self.retry(exc=exc, countdown=300)

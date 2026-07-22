@@ -1,4 +1,3 @@
-# quiz/models.py
 import re
 import uuid
 from decimal import Decimal
@@ -7,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db.models import F
 from django.utils import timezone
+
 
 def normalize_kenyan_phone(phone_str):
     """
@@ -99,16 +99,23 @@ class QuizPool(models.Model):
         ]
 
     def __str__(self):
-        return f"Pool {self.id} ({self.start_time.strftime('%Y-%m-%d %H:%M')} to {self.end_time.strftime('%Y-%m-%d %H:%M')})"
+        start_str = self.start_time.strftime('%Y-%m-%d %H:%M') if self.start_time else 'N/A'
+        end_str = self.end_time.strftime('%Y-%m-%d %H:%M') if self.end_time else 'N/A'
+        return f"Pool {self.id} ({start_str} to {end_str})"
 
-    def process_incoming_entry(self, entry_fee=Decimal('20.00')):
-        half_allocation = entry_fee / Decimal('2.00')
+    def process_incoming_entry(self, entry_fee=Decimal('16.00')):
+        """
+        Thread-safe method to update pool allocations.
+        Calculates retainage dynamically based on the passed entry fee share.
+        """
+        # Default entry_fee parameter (16.00) represents the 80% share allocated to prize pool
         QuizPool.objects.filter(id=self.id).update(
-            total_entry_fees_collected=F('total_entry_fees_collected') + entry_fee,
-            grand_prize_pool=F('grand_prize_pool') + half_allocation,
-            retained_company_earnings=F('retained_company_earnings') + half_allocation,
+            total_entry_fees_collected=F('total_entry_fees_collected') + (entry_fee / Decimal('0.80')),
+            grand_prize_pool=F('grand_prize_pool') + entry_fee,
+            retained_company_earnings=F('retained_company_earnings') + ((entry_fee / Decimal('0.80')) - entry_fee),
             total_entries=F('total_entries') + 1
         )
+        self.refresh_from_db()
 
 
 class QuestionBank(models.Model):
@@ -119,6 +126,7 @@ class QuestionBank(models.Model):
         ('LOCAL_FOOTBALL', 'Local Kenyan Football'),
         ('KENYAN_HISTORY', 'Kenyan History'),
         ('WORLD_FOOTBALL', 'World General Football'),
+        ('GENERAL', 'General Knowledge'),
     ]
     
     id = models.BigAutoField(primary_key=True)
@@ -128,17 +136,11 @@ class QuestionBank(models.Model):
     choice_2 = models.CharField(max_length=255)
     choice_3 = models.CharField(max_length=255)
     choice_4 = models.CharField(max_length=255)
-    correct_choice = models.PositiveSmallIntegerField()  
-    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, db_index=True)
+    correct_choice = models.CharField(max_length=10, default='1')
+    category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default='GENERAL', db_index=True)
 
     class Meta:
         db_table = 'quiz_question_bank'
-        constraints = [
-            models.CheckConstraint(
-                condition=models.Q(correct_choice__gte=1, correct_choice__lte=4),
-                name='valid_choice_index_range'
-            )
-        ]
 
     def __str__(self):
         return f"[{self.category}] {self.question_text[:40]}..."
@@ -164,18 +166,27 @@ class PaystackTransaction(models.Model):
 
     paystack_reference = models.CharField(max_length=255, primary_key=True, db_index=True)
     user_profile = models.ForeignKey(QuizUserProfile, on_delete=models.SET_NULL, null=True, blank=True, related_name='transactions')
+    pool = models.ForeignKey(QuizPool, on_delete=models.SET_NULL, null=True, blank=True, related_name='transactions')
     player_name = models.CharField(max_length=150, blank=True, null=True)
-    phone_number = models.CharField(max_length=20, db_index=True)
+    phone_number = models.CharField(max_length=20, db_index=True, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('20.00'))
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING', db_index=True)
+    
+    # Session performance metrics
+    score = models.PositiveSmallIntegerField(null=True, blank=True, default=0)
+    time_taken = models.FloatField(null=True, blank=True, default=0.0)
     
     access_token = models.CharField(max_length=64, unique=True, db_index=True)
     is_token_used = models.BooleanField(default=False, db_index=True)
     
+    # Payout tracking
+    payout_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    transfer_code = models.CharField(max_length=100, blank=True, null=True)
+    payout_status = models.CharField(max_length=20, choices=PAYOUT_CHOICES, default='UNPROCESSED', db_index=True)
+
     backend_metadata = models.JSONField(blank=True, null=True)
     created_at = models.DateTimeField(default=timezone.now)
-    payout_status = models.CharField(max_length=20, choices=PAYOUT_CHOICES, default='UNPROCESSED', db_index=True)
 
     class Meta:
         db_table = 'quiz_paystack_transaction'
@@ -204,10 +215,10 @@ class GameSession(models.Model):
         db_column='transaction_reference'
     )
     pool = models.ForeignKey(QuizPool, on_delete=models.PROTECT, related_name='game_sessions')
-    start_time = models.DateTimeField(db_index=True)
+    start_time = models.DateTimeField(default=timezone.now, db_index=True)
     end_time = models.DateTimeField(db_index=True, blank=True, null=True)
-    duration_seconds = models.FloatField(db_index=True, blank=True, null=True)
-    score = models.PositiveSmallIntegerField(blank=True, null=True)
+    duration_seconds = models.FloatField(db_index=True, default=0.0)
+    score = models.PositiveSmallIntegerField(default=0)
     is_disqualified = models.BooleanField(default=False, db_index=True)
 
     class Meta:
@@ -272,3 +283,22 @@ class PlatformRevenueAccount(models.Model):
 
     def __str__(self):
         return f"{self.account_name} - KSh {self.balance}"
+
+
+class StandbyQuestion(models.Model):
+    """
+    Fallback questions for auto-populating pools that have insufficient questions.
+    """
+    question_text = models.TextField()
+    choice_1 = models.CharField(max_length=255)
+    choice_2 = models.CharField(max_length=255)
+    choice_3 = models.CharField(max_length=255)
+    choice_4 = models.CharField(max_length=255)
+    correct_choice = models.CharField(max_length=10, default='1')
+    category = models.CharField(max_length=50, default="General")
+    
+    times_used = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.question_text[:50]

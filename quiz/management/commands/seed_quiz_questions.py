@@ -1,5 +1,6 @@
 import json
 import logging
+import time
 from decimal import Decimal
 from django.core.management.base import BaseCommand
 from django.utils import timezone
@@ -13,18 +14,62 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = "Seeds quiz questions into the active QuizPool with standby database fallback."
+    help = "Seeds quiz questions into the active QuizPool or directly into the StandbyQuestion table."
 
     def add_arguments(self, parser):
         parser.add_argument(
             '--count',
             type=int,
             default=200,
-            help='Number of questions required for the pool.'
+            help='Number of questions required.'
+        )
+        parser.add_argument(
+            '--standby',
+            action='store_true',
+            help='Seed questions directly into the StandbyQuestion bank without assigning them to an active pool.'
         )
 
     def handle(self, *args, **options):
         count = options['count']
+        is_standby = options['standby']
+
+        # =========================================================
+        # BRANCH 1: Populate the Standby Bank directly
+        # =========================================================
+        if is_standby:
+            self.stdout.write(self.style.NOTICE(f"Seeding {count} questions directly into StandbyQuestion table..."))
+            
+            questions_data = self._fetch_remote_questions(count)
+            if not questions_data:
+                self.stdout.write(self.style.ERROR("Failed to fetch remote questions for standby bank."))
+                return
+
+            with transaction.atomic():
+                created_standby = StandbyQuestion.objects.bulk_create([
+                    StandbyQuestion(
+                        question_text=q['question_text'],
+                        choice_1=q['choice_1'],
+                        choice_2=q['choice_2'],
+                        choice_3=q['choice_3'],
+                        choice_4=q['choice_4'],
+                        correct_choice=str(q['correct_choice']),
+                        category=q.get('category', 'General'),
+                        times_used=0
+                    )
+                    for q in questions_data
+                ])
+
+            self.stdout.write(
+                self.style.SUCCESS(
+                    f"Successfully added {len(created_standby)} questions to StandbyQuestion bank! "
+                    f"Total standby pool count: {StandbyQuestion.objects.count()}"
+                )
+            )
+            return
+
+        # =========================================================
+        # BRANCH 2: Standard Active Pool Seeding (Existing Logic)
+        # =========================================================
         now = timezone.now()
 
         # Always target the latest active pool by ordering descending by ID
@@ -146,22 +191,43 @@ class Command(BaseCommand):
                 - category must be one of: "Local Kenyan Football", "Kenyan History", or "World General Football".
                 """
 
-                response = client.models.generate_content(
-                    model='gemini-2.5-flash',
-                    contents=prompt,
-                    config=types.GenerateContentConfig(
-                        response_mime_type="application/json",
-                        temperature=0.7,
-                    ),
-                )
+                # Retry loop handling transient API spikes (e.g. 503 errors)
+                max_retries = 3
+                batch_success = False
 
-                if response and response.text:
-                    data = json.loads(response.text)
-                    if isinstance(data, list):
-                        all_questions.extend(data)
-                    else:
-                        break
-                else:
+                for attempt in range(max_retries):
+                    try:
+                        response = client.models.generate_content(
+                            model='gemini-2.5-flash',
+                            contents=prompt,
+                            config=types.GenerateContentConfig(
+                                response_mime_type="application/json",
+                                temperature=0.7,
+                            ),
+                        )
+
+                        if response and response.text:
+                            data = json.loads(response.text)
+                            if isinstance(data, list):
+                                all_questions.extend(data)
+                                batch_success = True
+                                break  # Break retry loop on success
+                    except Exception as e:
+                        wait_time = (attempt + 1) * 2
+                        if "503" in str(e) or "UNAVAILABLE" in str(e):
+                            self.stdout.write(
+                                self.style.WARNING(
+                                    f"Gemini API high demand spike (503). Retrying in {wait_time}s... (Attempt {attempt + 1}/{max_retries})"
+                                )
+                            )
+                        else:
+                            logger.warning(f"Error fetching questions: {str(e)}. Retrying in {wait_time}s...")
+                        
+                        time.sleep(wait_time)
+
+                # If all retries failed for a batch, break out to let the standby fallback handle the rest
+                if not batch_success:
+                    self.stdout.write(self.style.ERROR("API batch failed after retries. Stopping remote fetch."))
                     break
 
             return all_questions[:target_count] if all_questions else None

@@ -1,0 +1,3227 @@
+[
+{
+  "model": "quiz.standbyquestion",
+  "pk": 1,
+  "fields": {
+    "question_text": "Test Question 1?",
+    "choice_1": "Option A",
+    "choice_2": "Option B",
+    "choice_3": "Option C",
+    "choice_4": "Option D",
+    "correct_choice": "1",
+    "category": "General",
+    "times_used": 4,
+    "created_at": "2026-07-21T11:20:00.512Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 2,
+  "fields": {
+    "question_text": "Test Question 2?",
+    "choice_1": "Option A",
+    "choice_2": "Option B",
+    "choice_3": "Option C",
+    "choice_4": "Option D",
+    "correct_choice": "1",
+    "category": "General",
+    "times_used": 3,
+    "created_at": "2026-07-21T11:20:00.729Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 3,
+  "fields": {
+    "question_text": "Test Question 3?",
+    "choice_1": "Option A",
+    "choice_2": "Option B",
+    "choice_3": "Option C",
+    "choice_4": "Option D",
+    "correct_choice": "1",
+    "category": "General",
+    "times_used": 3,
+    "created_at": "2026-07-21T11:20:00.903Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 4,
+  "fields": {
+    "question_text": "Test Question 4?",
+    "choice_1": "Option A",
+    "choice_2": "Option B",
+    "choice_3": "Option C",
+    "choice_4": "Option D",
+    "correct_choice": "1",
+    "category": "General",
+    "times_used": 3,
+    "created_at": "2026-07-21T11:20:01.208Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 5,
+  "fields": {
+    "question_text": "Test Question 5?",
+    "choice_1": "Option A",
+    "choice_2": "Option B",
+    "choice_3": "Option C",
+    "choice_4": "Option D",
+    "correct_choice": "1",
+    "category": "General",
+    "times_used": 3,
+    "created_at": "2026-07-21T11:20:01.358Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 6,
+  "fields": {
+    "question_text": "Test Question 6?",
+    "choice_1": "Option A",
+    "choice_2": "Option B",
+    "choice_3": "Option C",
+    "choice_4": "Option D",
+    "correct_choice": "1",
+    "category": "General",
+    "times_used": 3,
+    "created_at": "2026-07-21T11:20:01.539Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 7,
+  "fields": {
+    "question_text": "Test Question 7?",
+    "choice_1": "Option A",
+    "choice_2": "Option B",
+    "choice_3": "Option C",
+    "choice_4": "Option D",
+    "correct_choice": "1",
+    "category": "General",
+    "times_used": 3,
+    "created_at": "2026-07-21T11:20:01.702Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 8,
+  "fields": {
+    "question_text": "Test Question 8?",
+    "choice_1": "Option A",
+    "choice_2": "Option B",
+    "choice_3": "Option C",
+    "choice_4": "Option D",
+    "correct_choice": "1",
+    "category": "General",
+    "times_used": 3,
+    "created_at": "2026-07-21T11:20:01.916Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 9,
+  "fields": {
+    "question_text": "Test Question 9?",
+    "choice_1": "Option A",
+    "choice_2": "Option B",
+    "choice_3": "Option C",
+    "choice_4": "Option D",
+    "correct_choice": "1",
+    "category": "General",
+    "times_used": 3,
+    "created_at": "2026-07-21T11:20:02.072Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 10,
+  "fields": {
+    "question_text": "Test Question 10?",
+    "choice_1": "Option A",
+    "choice_2": "Option B",
+    "choice_3": "Option C",
+    "choice_4": "Option D",
+    "correct_choice": "1",
+    "category": "General",
+    "times_used": 4,
+    "created_at": "2026-07-21T11:20:02.236Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 11,
+  "fields": {
+    "question_text": "Test Question 11?",
+    "choice_1": "Option A",
+    "choice_2": "Option B",
+    "choice_3": "Option C",
+    "choice_4": "Option D",
+    "correct_choice": "1",
+    "category": "General",
+    "times_used": 4,
+    "created_at": "2026-07-21T11:20:02.391Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 12,
+  "fields": {
+    "question_text": "Test Question 12?",
+    "choice_1": "Option A",
+    "choice_2": "Option B",
+    "choice_3": "Option C",
+    "choice_4": "Option D",
+    "correct_choice": "1",
+    "category": "General",
+    "times_used": 4,
+    "created_at": "2026-07-21T11:20:02.548Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 13,
+  "fields": {
+    "question_text": "Test Question 13?",
+    "choice_1": "Option A",
+    "choice_2": "Option B",
+    "choice_3": "Option C",
+    "choice_4": "Option D",
+    "correct_choice": "1",
+    "category": "General",
+    "times_used": 3,
+    "created_at": "2026-07-21T11:20:02.708Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 14,
+  "fields": {
+    "question_text": "Test Question 14?",
+    "choice_1": "Option A",
+    "choice_2": "Option B",
+    "choice_3": "Option C",
+    "choice_4": "Option D",
+    "correct_choice": "1",
+    "category": "General",
+    "times_used": 4,
+    "created_at": "2026-07-21T11:20:02.872Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 15,
+  "fields": {
+    "question_text": "Test Question 15?",
+    "choice_1": "Option A",
+    "choice_2": "Option B",
+    "choice_3": "Option C",
+    "choice_4": "Option D",
+    "correct_choice": "1",
+    "category": "General",
+    "times_used": 3,
+    "created_at": "2026-07-21T11:20:03.027Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 16,
+  "fields": {
+    "question_text": "Which Kenyan club holds the record for the most FKF Premier League titles?",
+    "choice_1": "Gor Mahia",
+    "choice_2": "AFC Leopards",
+    "choice_3": "Tusker FC",
+    "choice_4": "Ulinzi Stars",
+    "correct_choice": "1",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 17,
+  "fields": {
+    "question_text": "Who was the captain of the Harambee Stars squad that qualified for the 2019 AFCON tournament?",
+    "choice_1": "Victor Wanyama",
+    "choice_2": "Michael Olunga",
+    "choice_3": "Dennis Oliech",
+    "choice_4": "Arnold Origi",
+    "correct_choice": "1",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 18,
+  "fields": {
+    "question_text": "In which year did Gor Mahia become the first (and only) Kenyan club to win a continental title, the African Cup Winners' Cup (Mandela Cup)?",
+    "choice_1": "1979",
+    "choice_2": "1987",
+    "choice_3": "1991",
+    "choice_4": "2000",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 19,
+  "fields": {
+    "question_text": "Which stadium is the traditional home ground for both Gor Mahia and AFC Leopards for their 'Mashemeji Derby'?",
+    "choice_1": "Nyayo National Stadium",
+    "choice_2": "Moi International Sports Centre Kasarani",
+    "choice_3": "City Stadium",
+    "choice_4": "Bukhungu Stadium",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 20,
+  "fields": {
+    "question_text": "The CECAFA Senior Challenge Cup is contested by national teams from which region?",
+    "choice_1": "West Africa",
+    "choice_2": "Southern Africa",
+    "choice_3": "East and Central Africa",
+    "choice_4": "North Africa",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 21,
+  "fields": {
+    "question_text": "Which former Harambee Stars striker is famously known by the nickname 'The Menace'?",
+    "choice_1": "Dennis Oliech",
+    "choice_2": "Mike Okoth",
+    "choice_3": "Allan Wanga",
+    "choice_4": "John Baraza",
+    "correct_choice": "1",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 22,
+  "fields": {
+    "question_text": "Tusker FC is famously owned by which major Kenyan company?",
+    "choice_1": "Safaricom",
+    "choice_2": "Kenya Commercial Bank (KCB)",
+    "choice_3": "East African Breweries Limited (EABL)",
+    "choice_4": "Mumias Sugar Company",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 23,
+  "fields": {
+    "question_text": "Who was the head coach of the Harambee Stars when they last qualified for the Africa Cup of Nations in 2019?",
+    "choice_1": "Sebastien Migne",
+    "choice_2": "Francis Kimanzi",
+    "choice_3": "Adel Amrouche",
+    "choice_4": "Paul Put",
+    "correct_choice": "1",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 24,
+  "fields": {
+    "question_text": "Which Kenyan club won the FKF Premier League title in the 2022-2023 season?",
+    "choice_1": "Tusker FC",
+    "choice_2": "Gor Mahia",
+    "choice_3": "Kakamega Homeboyz",
+    "choice_4": "Kenya Police FC",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 25,
+  "fields": {
+    "question_text": "Before the FKF Premier League, what was the top tier of Kenyan football known as for many years?",
+    "choice_1": "Kenya National Super League",
+    "choice_2": "Kenya Premier League (KPL)",
+    "choice_3": "National Division One",
+    "choice_4": "Super Eight League",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 26,
+  "fields": {
+    "question_text": "Which Kenyan midfielder famously played for Inter Milan and won the UEFA Champions League with them in 2010?",
+    "choice_1": "Victor Wanyama",
+    "choice_2": "McDonald Mariga",
+    "choice_3": "Dennis Oliech",
+    "choice_4": "Jamal Mohammed",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 27,
+  "fields": {
+    "question_text": "The nickname 'Ingwe' is associated with which popular Kenyan football club?",
+    "choice_1": "Gor Mahia",
+    "choice_2": "AFC Leopards",
+    "choice_3": "Ulinzi Stars",
+    "choice_4": "Bandari FC",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 28,
+  "fields": {
+    "question_text": "How many times has Kenya's Harambee Stars participated in the Africa Cup of Nations (AFCON) finals as of 2024?",
+    "choice_1": "4",
+    "choice_2": "6",
+    "choice_3": "7",
+    "choice_4": "8",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 29,
+  "fields": {
+    "question_text": "Which Kenyan club represented the country in the inaugural CAF Champions League in 1997, after winning the last African Cup of Champions Clubs in 1996?",
+    "choice_1": "Gor Mahia",
+    "choice_2": "AFC Leopards",
+    "choice_3": "Kenya Breweries (now Tusker FC)",
+    "choice_4": "Mumias Sugar FC",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 30,
+  "fields": {
+    "question_text": "Who is the current (as of late 2023/early 2024) top scorer for the Harambee Stars in active international football?",
+    "choice_1": "Michael Olunga",
+    "choice_2": "Masoud Juma",
+    "choice_3": "Jesse Were",
+    "choice_4": "Ayub Timbe",
+    "correct_choice": "1",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 31,
+  "fields": {
+    "question_text": "The 'Mashemeji Derby' is the fierce rivalry between which two Kenyan clubs?",
+    "choice_1": "Tusker FC and Ulinzi Stars",
+    "choice_2": "Gor Mahia and AFC Leopards",
+    "choice_3": "Bandari FC and Kariobangi Sharks",
+    "choice_4": "Sofapaka FC and Mathare United",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 32,
+  "fields": {
+    "question_text": "Which Kenyan club won the FKF Premier League title in the 2020-2021 season?",
+    "choice_1": "Gor Mahia",
+    "choice_2": "Tusker FC",
+    "choice_3": "KCB FC",
+    "choice_4": "AFC Leopards",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 33,
+  "fields": {
+    "question_text": "Who was Kenya's first Vice President?",
+    "choice_1": "Jaramogi Oginga Odinga",
+    "choice_2": "Daniel arap Moi",
+    "choice_3": "Joseph Murumbi",
+    "choice_4": "Mwai Kibaki",
+    "correct_choice": "1",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 34,
+  "fields": {
+    "question_text": "In what year did Kenya gain full independence from British colonial rule?",
+    "choice_1": "1959",
+    "choice_2": "1963",
+    "choice_3": "1964",
+    "choice_4": "1960",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 35,
+  "fields": {
+    "question_text": "The 'Mau Mau Uprising' was primarily a rebellion against which colonial power in Kenya?",
+    "choice_1": "German",
+    "choice_2": "French",
+    "choice_3": "British",
+    "choice_4": "Portuguese",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 36,
+  "fields": {
+    "question_text": "Who was the first President of the Republic of Kenya?",
+    "choice_1": "Daniel arap Moi",
+    "choice_2": "Mwai Kibaki",
+    "choice_3": "Jomo Kenyatta",
+    "choice_4": "Jaramogi Oginga Odinga",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 37,
+  "fields": {
+    "question_text": "Which major constitutional milestone was achieved in Kenya in August 2010?",
+    "choice_1": "The introduction of multi-party politics",
+    "choice_2": "The promulgation of a new constitution",
+    "choice_3": "The end of the state of emergency",
+    "choice_4": "The establishment of a bicameral parliament",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 38,
+  "fields": {
+    "question_text": "The 'Lancaster House Conferences' were crucial in negotiating Kenya's independence from which country?",
+    "choice_1": "United States",
+    "choice_2": "France",
+    "choice_3": "United Kingdom",
+    "choice_4": "Portugal",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 39,
+  "fields": {
+    "question_text": "Which Kenyan leader famously declared 'Harambee' as a national motto, encouraging self-help and collective effort?",
+    "choice_1": "Mwai Kibaki",
+    "choice_2": "Daniel arap Moi",
+    "choice_3": "Jomo Kenyatta",
+    "choice_4": "Jaramogi Oginga Odinga",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 40,
+  "fields": {
+    "question_text": "The 1982 attempted coup d'état in Kenya was primarily aimed at overthrowing which president?",
+    "choice_1": "Jomo Kenyatta",
+    "choice_2": "Daniel arap Moi",
+    "choice_3": "Mwai Kibaki",
+    "choice_4": "Uhuru Kenyatta",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 41,
+  "fields": {
+    "question_text": "Who was the third President of Kenya, serving from 2002 to 2013?",
+    "choice_1": "Jomo Kenyatta",
+    "choice_2": "Daniel arap Moi",
+    "choice_3": "Mwai Kibaki",
+    "choice_4": "Uhuru Kenyatta",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 42,
+  "fields": {
+    "question_text": "Which political party dominated Kenyan politics from independence until the early 1990s as the sole legal party?",
+    "choice_1": "FORD-Asili",
+    "choice_2": "Democratic Party (DP)",
+    "choice_3": "Kenya African National Union (KANU)",
+    "choice_4": "National Rainbow Coalition (NARC)",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 43,
+  "fields": {
+    "question_text": "Dedan Kimathi Waciuri was a prominent leader in which significant historical movement in Kenya?",
+    "choice_1": "The struggle for Majimboism",
+    "choice_2": "The Mau Mau Uprising",
+    "choice_3": "The fight for multi-party democracy",
+    "choice_4": "The Saba Saba demonstrations",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 44,
+  "fields": {
+    "question_text": "What was the primary objective of the 'Saba Saba' (July 7th) demonstrations in Kenya during the early 1990s?",
+    "choice_1": "To protest against land grabbing",
+    "choice_2": "To demand for multi-party democracy",
+    "choice_3": "To advocate for women's rights",
+    "choice_4": "To call for educational reforms",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 45,
+  "fields": {
+    "question_text": "Who succeeded Jomo Kenyatta as President of Kenya in 1978?",
+    "choice_1": "Jaramogi Oginga Odinga",
+    "choice_2": "Mwai Kibaki",
+    "choice_3": "Daniel arap Moi",
+    "choice_4": "Joseph Murumbi",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 46,
+  "fields": {
+    "question_text": "The term 'Majimbo' in Kenyan history refers to a political system advocating for what?",
+    "choice_1": "One-party rule",
+    "choice_2": "Centralized government",
+    "choice_3": "Regional devolution of power",
+    "choice_4": "A socialist economy",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 47,
+  "fields": {
+    "question_text": "Which Kenyan politician was a key figure in the 'Young Turks' movement, advocating for democratic reforms in the early 1990s?",
+    "choice_1": "Mwai Kibaki",
+    "choice_2": "Daniel arap Moi",
+    "choice_3": "Raila Odinga",
+    "choice_4": "Uhuru Kenyatta",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 48,
+  "fields": {
+    "question_text": "What significant constitutional amendment in 1991 officially re-introduced multi-party politics in Kenya?",
+    "choice_1": "Repeal of Section 2A of the Constitution",
+    "choice_2": "Introduction of the Bill of Rights",
+    "choice_3": "Creation of the Supreme Court",
+    "choice_4": "Establishment of the Electoral Commission",
+    "correct_choice": "1",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 49,
+  "fields": {
+    "question_text": "The 'Waki Commission' was established in Kenya to investigate which major post-election event?",
+    "choice_1": "The 1982 coup attempt",
+    "choice_2": "The 2007-2008 post-election violence",
+    "choice_3": "The assassination of Tom Mboya",
+    "choice_4": "The Goldenberg scandal",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 50,
+  "fields": {
+    "question_text": "Which country has won the most FIFA World Cup titles?",
+    "choice_1": "Germany",
+    "choice_2": "Italy",
+    "choice_3": "Argentina",
+    "choice_4": "Brazil",
+    "correct_choice": "4",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 51,
+  "fields": {
+    "question_text": "Who is the all-time leading goal scorer in the history of the UEFA Champions League?",
+    "choice_1": "Lionel Messi",
+    "choice_2": "Cristiano Ronaldo",
+    "choice_3": "Robert Lewandowski",
+    "choice_4": "Karim Benzema",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 52,
+  "fields": {
+    "question_text": "Which club famously won the UEFA Champions League three consecutive times from 2016 to 2018?",
+    "choice_1": "FC Barcelona",
+    "choice_2": "Bayern Munich",
+    "choice_3": "Real Madrid",
+    "choice_4": "Liverpool FC",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 53,
+  "fields": {
+    "question_text": "In which year did England win their only FIFA World Cup title?",
+    "choice_1": "1950",
+    "choice_2": "1966",
+    "choice_3": "1974",
+    "choice_4": "1982",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 54,
+  "fields": {
+    "question_text": "Who is often referred to as 'El Pibe de Oro' (The Golden Boy) in football?",
+    "choice_1": "Pelé",
+    "choice_2": "Diego Maradona",
+    "choice_3": "Johan Cruyff",
+    "choice_4": "Alfredo Di Stéfano",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 55,
+  "fields": {
+    "question_text": "Which European national team won the UEFA European Championship (Euros) in 2020 (played in 2021)?",
+    "choice_1": "France",
+    "choice_2": "England",
+    "choice_3": "Italy",
+    "choice_4": "Portugal",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 56,
+  "fields": {
+    "question_text": "Which club holds the record for the most English Premier League titles since its inception in 1992?",
+    "choice_1": "Liverpool FC",
+    "choice_2": "Chelsea FC",
+    "choice_3": "Arsenal FC",
+    "choice_4": "Manchester United",
+    "correct_choice": "4",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 57,
+  "fields": {
+    "question_text": "The 'Ballon d'Or' award is presented annually to recognize what?",
+    "choice_1": "The best team in Europe",
+    "choice_2": "The best individual male player in the world",
+    "choice_3": "The highest-scoring league in Europe",
+    "choice_4": "The most disciplined player",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 58,
+  "fields": {
+    "question_text": "Which country hosted the FIFA World Cup in 2014?",
+    "choice_1": "South Africa",
+    "choice_2": "Brazil",
+    "choice_3": "Russia",
+    "choice_4": "Germany",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 59,
+  "fields": {
+    "question_text": "Who is the only player to have won the FIFA World Cup three times?",
+    "choice_1": "Diego Maradona",
+    "choice_2": "Franz Beckenbauer",
+    "choice_3": "Pelé",
+    "choice_4": "Cafu",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 60,
+  "fields": {
+    "question_text": "Which club won the first-ever UEFA Champions League title in its rebranded format in 1992-93?",
+    "choice_1": "AC Milan",
+    "choice_2": "Olympique Marseille",
+    "choice_3": "FC Barcelona",
+    "choice_4": "Manchester United",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 61,
+  "fields": {
+    "question_text": "The nickname 'The Invincibles' is associated with which club's undefeated Premier League season?",
+    "choice_1": "Manchester United",
+    "choice_2": "Liverpool FC",
+    "choice_3": "Arsenal FC",
+    "choice_4": "Chelsea FC",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 62,
+  "fields": {
+    "question_text": "Which South American national team won the Copa América in 2021, ending a long trophy drought?",
+    "choice_1": "Brazil",
+    "choice_2": "Uruguay",
+    "choice_3": "Argentina",
+    "choice_4": "Chile",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 63,
+  "fields": {
+    "question_text": "Who was the top scorer at the 2022 FIFA World Cup in Qatar?",
+    "choice_1": "Lionel Messi",
+    "choice_2": "Kylian Mbappé",
+    "choice_3": "Olivier Giroud",
+    "choice_4": "Harry Kane",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 64,
+  "fields": {
+    "question_text": "Which legendary Dutch player is credited with popularizing the 'Total Football' philosophy?",
+    "choice_1": "Ruud Gullit",
+    "choice_2": "Marco van Basten",
+    "choice_3": "Johan Cruyff",
+    "choice_4": "Dennis Bergkamp",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 65,
+  "fields": {
+    "question_text": "Which club has won the most FA Cup titles in English football history?",
+    "choice_1": "Manchester United",
+    "choice_2": "Chelsea FC",
+    "choice_3": "Arsenal FC",
+    "choice_4": "Liverpool FC",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 66,
+  "fields": {
+    "question_text": "Which Kenyan club holds the record for the most FKF Premier League titles?",
+    "choice_1": "AFC Leopards",
+    "choice_2": "Tusker FC",
+    "choice_3": "Gor Mahia",
+    "choice_4": "Ulinzi Stars",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 67,
+  "fields": {
+    "question_text": "Who was the head coach of the Harambee Stars when they qualified for the 2004 Africa Cup of Nations?",
+    "choice_1": "Francis Kimanzi",
+    "choice_2": "Jacob 'Ghost' Mulee",
+    "choice_3": "Adel Amrouche",
+    "choice_4": "Sebastien Migne",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 68,
+  "fields": {
+    "question_text": "In which year did AFC Leopards last win the FKF Premier League title?",
+    "choice_1": "2009",
+    "choice_2": "1998",
+    "choice_3": "2013",
+    "choice_4": "1994",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 69,
+  "fields": {
+    "question_text": "Who is Kenya's all-time leading goal scorer for the Harambee Stars?",
+    "choice_1": "Michael Olunga",
+    "choice_2": "Joe Kadenge",
+    "choice_3": "Dennis Oliech",
+    "choice_4": "Allan Wanga",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 70,
+  "fields": {
+    "question_text": "What is the nickname of the Gor Mahia football club?",
+    "choice_1": "Ingwe",
+    "choice_2": "K'Ogalo",
+    "choice_3": "Brewers",
+    "choice_4": "Soldiers",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 71,
+  "fields": {
+    "question_text": "Which of these stadiums has historically hosted the most Mashemeji Derby matches?",
+    "choice_1": "Nyayo National Stadium",
+    "choice_2": "Moi International Sports Centre Kasarani",
+    "choice_3": "Bukhungu Stadium",
+    "choice_4": "Kenyatta Stadium Machakos",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 72,
+  "fields": {
+    "question_text": "Which Kenyan club won the CECAFA Club Championship in 1985, a significant achievement for Kenyan football at the time?",
+    "choice_1": "AFC Leopards",
+    "choice_2": "Tusker FC",
+    "choice_3": "Gor Mahia",
+    "choice_4": "Luo Union",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 73,
+  "fields": {
+    "question_text": "Who was the first Kenyan to play in the English Premier League?",
+    "choice_1": "Dennis Oliech",
+    "choice_2": "MacDonald Mariga",
+    "choice_3": "Victor Wanyama",
+    "choice_4": "Michael Olunga",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.428Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 74,
+  "fields": {
+    "question_text": "The FKF Premier League was formerly known by which name for many years?",
+    "choice_1": "National Super League",
+    "choice_2": "FKF Division One",
+    "choice_3": "Kenyan Premier League",
+    "choice_4": "Tusker Premier League",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 75,
+  "fields": {
+    "question_text": "Which Kenyan club reached the CAF Confederations Cup group stage in 2019?",
+    "choice_1": "AFC Leopards",
+    "choice_2": "Tusker FC",
+    "choice_3": "Bandari FC",
+    "choice_4": "Gor Mahia",
+    "correct_choice": "4",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 76,
+  "fields": {
+    "question_text": "Which Harambee Stars legend is celebrated for his goal-scoring ability and played for Abaluhya FC (now AFC Leopards) in the 1960s?",
+    "choice_1": "Bobby Ogolla",
+    "choice_2": "Joe Kadenge",
+    "choice_3": "Allan Thigo",
+    "choice_4": "Peter Dawo",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 77,
+  "fields": {
+    "question_text": "Which Kenyan club won the FKF Premier League title in the 2022-2023 season?",
+    "choice_1": "Tusker FC",
+    "choice_2": "KCB FC",
+    "choice_3": "Gor Mahia",
+    "choice_4": "Kakamega Homeboyz",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 78,
+  "fields": {
+    "question_text": "Apart from Kenya, which other East African nation's national team did Jacob 'Ghost' Mulee also coach?",
+    "choice_1": "Uganda",
+    "choice_2": "Tanzania",
+    "choice_3": "Rwanda",
+    "choice_4": "Ethiopia",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 79,
+  "fields": {
+    "question_text": "Which Kenyan club has won the most FKF Cup (formerly FA Cup or President's Cup) titles?",
+    "choice_1": "Gor Mahia",
+    "choice_2": "Tusker FC",
+    "choice_3": "AFC Leopards",
+    "choice_4": "Mumias Sugar",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 80,
+  "fields": {
+    "question_text": "Which of these former Harambee Stars players has gone on to become a successful coach in the FKF Premier League?",
+    "choice_1": "Musa Otieno",
+    "choice_2": "Titus Mulama",
+    "choice_3": "Francis Kimanzi",
+    "choice_4": "John Baraza",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 81,
+  "fields": {
+    "question_text": "Which Kenyan player was part of the Inter Milan squad that won the UEFA Champions League in 2010, though he did not play in the final?",
+    "choice_1": "Victor Wanyama",
+    "choice_2": "Dennis Oliech",
+    "choice_3": "MacDonald Mariga",
+    "choice_4": "Michael Olunga",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 82,
+  "fields": {
+    "question_text": "The CECAFA Senior Challenge Cup is a regional tournament for which part of Africa?",
+    "choice_1": "West Africa",
+    "choice_2": "Southern Africa",
+    "choice_3": "North Africa",
+    "choice_4": "East and Central Africa",
+    "correct_choice": "4",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 83,
+  "fields": {
+    "question_text": "Who was Kenya's first Vice President?",
+    "choice_1": "Daniel Arap Moi",
+    "choice_2": "Joseph Murumbi",
+    "choice_3": "Jaramogi Oginga Odinga",
+    "choice_4": "Mwai Kibaki",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 84,
+  "fields": {
+    "question_text": "In which year did Kenya gain full independence from British colonial rule?",
+    "choice_1": "1961",
+    "choice_2": "1963",
+    "choice_3": "1965",
+    "choice_4": "1959",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 85,
+  "fields": {
+    "question_text": "What was the name of the armed resistance movement that fought for Kenya's independence against the British?",
+    "choice_1": "Maji Maji",
+    "choice_2": "Mau Mau",
+    "choice_3": "Shifta",
+    "choice_4": "Saba Saba",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 86,
+  "fields": {
+    "question_text": "Who was the first woman to be elected to the Kenyan Parliament in 1969?",
+    "choice_1": "Phoebe Asiyo",
+    "choice_2": "Grace Onyango",
+    "choice_3": "Martha Karua",
+    "choice_4": "Charity Ngilu",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 87,
+  "fields": {
+    "question_text": "The 'Saba Saba' day protests in 1990 were primarily advocating for what?",
+    "choice_1": "Land reforms",
+    "choice_2": "Economic liberalization",
+    "choice_3": "Multi-party democracy",
+    "choice_4": "Free education",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 88,
+  "fields": {
+    "question_text": "Which historic document abolished the 'one-party state' in Kenya, paving the way for multi-party elections?",
+    "choice_1": "Lancaster House Agreement",
+    "choice_2": "Section 2A of the Constitution",
+    "choice_3": "The New Deal",
+    "choice_4": "Majimbo Constitution",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 89,
+  "fields": {
+    "question_text": "Who was the second President of Kenya?",
+    "choice_1": "Jomo Kenyatta",
+    "choice_2": "Daniel Arap Moi",
+    "choice_3": "Mwai Kibaki",
+    "choice_4": "Uhuru Kenyatta",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 90,
+  "fields": {
+    "question_text": "The 'Waki Commission' was established to investigate what major event in Kenyan history?",
+    "choice_1": "The Wagalla Massacre",
+    "choice_2": "The Assassination of Tom Mboya",
+    "choice_3": "Post-election violence of 2007-2008",
+    "choice_4": "The Shifta War",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 91,
+  "fields": {
+    "question_text": "Which Kenyan Nobel Peace Prize laureate was recognized for her contribution to sustainable development, democracy, and peace?",
+    "choice_1": "Wangari Maathai",
+    "choice_2": "Dr. Oki Ooko Ombaka",
+    "choice_3": "Koigi wa Wamwere",
+    "choice_4": "Dr. Richard Leakey",
+    "correct_choice": "1",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 92,
+  "fields": {
+    "question_text": "What was the primary objective of the 'Devolution' system introduced by the 2010 Constitution?",
+    "choice_1": "Strengthen the presidency",
+    "choice_2": "Promote a one-party system",
+    "choice_3": "Decentralize power and resources to counties",
+    "choice_4": "Establish a federal government",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 93,
+  "fields": {
+    "question_text": "Which prominent Kenyan politician was assassinated in 1969, leading to significant political unrest?",
+    "choice_1": "Pio Gama Pinto",
+    "choice_2": "J.M. Kariuki",
+    "choice_3": "Robert Ouko",
+    "choice_4": "Tom Mboya",
+    "correct_choice": "4",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 94,
+  "fields": {
+    "question_text": "The 'Madaraka Day' public holiday in Kenya commemorates what significant event?",
+    "choice_1": "Independence from Britain",
+    "choice_2": "Promulgation of the Constitution",
+    "choice_3": "Self-governance",
+    "choice_4": "Republic Day",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 95,
+  "fields": {
+    "question_text": "Who chaired the Constitution of Kenya Review Commission (CKRC) that gathered public views for the 2010 Constitution?",
+    "choice_1": "Willy Mutunga",
+    "choice_2": "Yash Pal Ghai",
+    "choice_3": "Kiraitu Murungi",
+    "choice_4": "Amos Wako",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 96,
+  "fields": {
+    "question_text": "Which historic agreement, signed in London, laid the groundwork for Kenya's independence constitution?",
+    "choice_1": "Treaty of Versailles",
+    "choice_2": "Arusha Accords",
+    "choice_3": "Lancaster House Conferences",
+    "choice_4": "Rome Statute",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 97,
+  "fields": {
+    "question_text": "Which Kenyan President initiated the free primary education program in 2003?",
+    "choice_1": "Jomo Kenyatta",
+    "choice_2": "Daniel Arap Moi",
+    "choice_3": "Mwai Kibaki",
+    "choice_4": "Uhuru Kenyatta",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 98,
+  "fields": {
+    "question_text": "The 'Nyayo philosophy' of Peace, Love, and Unity was associated with which Kenyan President?",
+    "choice_1": "Jomo Kenyatta",
+    "choice_2": "Daniel Arap Moi",
+    "choice_3": "Mwai Kibaki",
+    "choice_4": "Uhuru Kenyatta",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 99,
+  "fields": {
+    "question_text": "What was the original name of the political party KANU, which dominated Kenyan politics for decades?",
+    "choice_1": "Kenya African Democratic Union",
+    "choice_2": "Kenya People's Union",
+    "choice_3": "Kenya African National Union",
+    "choice_4": "Kenya National Congress",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 100,
+  "fields": {
+    "question_text": "Which country has won the most FIFA World Cup titles?",
+    "choice_1": "Germany",
+    "choice_2": "Italy",
+    "choice_3": "Argentina",
+    "choice_4": "Brazil",
+    "correct_choice": "4",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 101,
+  "fields": {
+    "question_text": "Who is the all-time leading goal scorer in the history of the FIFA World Cup?",
+    "choice_1": "Pelé",
+    "choice_2": "Ronaldo Nazário",
+    "choice_3": "Miroslav Klose",
+    "choice_4": "Gerd Müller",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 102,
+  "fields": {
+    "question_text": "Which club has won the most UEFA Champions League titles?",
+    "choice_1": "FC Bayern Munich",
+    "choice_2": "AC Milan",
+    "choice_3": "Liverpool FC",
+    "choice_4": "Real Madrid CF",
+    "correct_choice": "4",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 103,
+  "fields": {
+    "question_text": "In which year did the first FIFA World Cup take place?",
+    "choice_1": "1926",
+    "choice_2": "1930",
+    "choice_3": "1934",
+    "choice_4": "1938",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 104,
+  "fields": {
+    "question_text": "Who won the Ballon d'Or award the most times?",
+    "choice_1": "Cristiano Ronaldo",
+    "choice_2": "Michel Platini",
+    "choice_3": "Johan Cruyff",
+    "choice_4": "Lionel Messi",
+    "correct_choice": "4",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 105,
+  "fields": {
+    "question_text": "Which national team won the UEFA European Championship (Euro) in 2020 (played in 2021)?",
+    "choice_1": "England",
+    "choice_2": "Italy",
+    "choice_3": "Spain",
+    "choice_4": "Portugal",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 106,
+  "fields": {
+    "question_text": "Which player holds the record for the most goals scored in a single UEFA Champions League season?",
+    "choice_1": "Lionel Messi",
+    "choice_2": "Robert Lewandowski",
+    "choice_3": "Cristiano Ronaldo",
+    "choice_4": "Karim Benzema",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 107,
+  "fields": {
+    "question_text": "Which country hosted the 2010 FIFA World Cup, the first time the tournament was held in Africa?",
+    "choice_1": "Egypt",
+    "choice_2": "Morocco",
+    "choice_3": "South Africa",
+    "choice_4": "Nigeria",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 108,
+  "fields": {
+    "question_text": "Which legendary Dutch player is credited with popularizing 'Total Football' in the 1970s?",
+    "choice_1": "Ruud Gullit",
+    "choice_2": "Marco van Basten",
+    "choice_3": "Johan Cruyff",
+    "choice_4": "Dennis Bergkamp",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 109,
+  "fields": {
+    "question_text": "Who is the only player to have won the FIFA World Cup three times?",
+    "choice_1": "Diego Maradona",
+    "choice_2": "Franz Beckenbauer",
+    "choice_3": "Pelé",
+    "choice_4": "Ronaldo Nazário",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 110,
+  "fields": {
+    "question_text": "Which English club completed an unprecedented 'treble' (Premier League, FA Cup, Champions League) in the 1998-99 season?",
+    "choice_1": "Arsenal FC",
+    "choice_2": "Liverpool FC",
+    "choice_3": "Chelsea FC",
+    "choice_4": "Manchester United",
+    "correct_choice": "4",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 111,
+  "fields": {
+    "question_text": "Which manager holds the record for the most Premier League titles won?",
+    "choice_1": "Arsène Wenger",
+    "choice_2": "Pep Guardiola",
+    "choice_3": "José Mourinho",
+    "choice_4": "Sir Alex Ferguson",
+    "correct_choice": "4",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 112,
+  "fields": {
+    "question_text": "Which stadium is known as 'The Theatre of Dreams'?",
+    "choice_1": "Wembley Stadium",
+    "choice_2": "Camp Nou",
+    "choice_3": "Old Trafford",
+    "choice_4": "Allianz Arena",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 113,
+  "fields": {
+    "question_text": "Which country won the inaugural UEFA European Championship in 1960?",
+    "choice_1": "France",
+    "choice_2": "Spain",
+    "choice_3": "Soviet Union",
+    "choice_4": "West Germany",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 114,
+  "fields": {
+    "question_text": "What is the maximum number of substitutions allowed for a team in regulation time during a FIFA World Cup match?",
+    "choice_1": "Three",
+    "choice_2": "Four",
+    "choice_3": "Five",
+    "choice_4": "Six",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 115,
+  "fields": {
+    "question_text": "Which female footballer is the all-time leading scorer in international football (men's and women's combined)?",
+    "choice_1": "Marta",
+    "choice_2": "Abby Wambach",
+    "choice_3": "Christine Sinclair",
+    "choice_4": "Alex Morgan",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 116,
+  "fields": {
+    "question_text": "Which Kenyan club holds the record for the most FKF Premier League titles?",
+    "choice_1": "Tusker FC",
+    "choice_2": "AFC Leopards",
+    "choice_3": "Gor Mahia",
+    "choice_4": "Ulinzi Stars",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 117,
+  "fields": {
+    "question_text": "Who was the coach of the Harambee Stars when they last qualified for the Africa Cup of Nations in 2019?",
+    "choice_1": "Francis Kimanzi",
+    "choice_2": "Sebastien Migne",
+    "choice_3": "Jacob Mulee",
+    "choice_4": "Adel Amrouche",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 118,
+  "fields": {
+    "question_text": "Which stadium is the traditional home ground for both Gor Mahia and AFC Leopards?",
+    "choice_1": "Nyayo National Stadium",
+    "choice_2": "Moi International Sports Centre Kasarani",
+    "choice_3": "Bukhungu Stadium",
+    "choice_4": "Kenyatta Stadium Machakos",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 119,
+  "fields": {
+    "question_text": "In what year did Gor Mahia win their historic CECAFA Club Championship title, becoming the first East African club to do so?",
+    "choice_1": "1976",
+    "choice_2": "1985",
+    "choice_3": "1987",
+    "choice_4": "1991",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 120,
+  "fields": {
+    "question_text": "Which player is widely regarded as one of Kenya's greatest ever footballers, having played for Inter Milan?",
+    "choice_1": "Dennis Oliech",
+    "choice_2": "Victor Wanyama",
+    "choice_3": "McDonald Mariga",
+    "choice_4": "Musa Otieno",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 121,
+  "fields": {
+    "question_text": "Which club finished second behind Gor Mahia in the 2022-2023 FKF Premier League season?",
+    "choice_1": "Tusker FC",
+    "choice_2": "Kakamega Homeboyz",
+    "choice_3": "Nzoia Sugar",
+    "choice_4": "Kenya Police FC",
+    "correct_choice": "1",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 122,
+  "fields": {
+    "question_text": "The 'Mashemeji Derby' refers to the rivalry between which two Kenyan clubs?",
+    "choice_1": "Tusker FC and Ulinzi Stars",
+    "choice_2": "Gor Mahia and Sofapaka",
+    "choice_3": "AFC Leopards and Gor Mahia",
+    "choice_4": "Mathare United and Kariobangi Sharks",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 123,
+  "fields": {
+    "question_text": "Before its rebranding to FKF Premier League, what was the common name for Kenya's top-tier football league?",
+    "choice_1": "KPL (Kenyan Premier League)",
+    "choice_2": "NSL (National Super League)",
+    "choice_3": "Div One",
+    "choice_4": "Super 8 League",
+    "correct_choice": "1",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 124,
+  "fields": {
+    "question_text": "Which Kenyan club won the inaugural FKF Premier League title under its current name format in 2020-2021?",
+    "choice_1": "Gor Mahia",
+    "choice_2": "Tusker FC",
+    "choice_3": "KCB",
+    "choice_4": "Bandari FC",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 125,
+  "fields": {
+    "question_text": "Who captained the Harambee Stars during their 2019 Africa Cup of Nations campaign?",
+    "choice_1": "Victor Wanyama",
+    "choice_2": "Dennis Oliech",
+    "choice_3": "Michael Olunga",
+    "choice_4": "Musa Otieno",
+    "correct_choice": "1",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 126,
+  "fields": {
+    "question_text": "Which Kenyan city hosted the 2017 CECAFA Senior Challenge Cup final?",
+    "choice_1": "Nairobi",
+    "choice_2": "Mombasa",
+    "choice_3": "Kisumu",
+    "choice_4": "Machakos",
+    "correct_choice": "4",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 127,
+  "fields": {
+    "question_text": "Which former AFC Leopards striker had a successful career in Belgium and is known for his goal-scoring prowess?",
+    "choice_1": "Boniface Ambani",
+    "choice_2": "Allan Wanga",
+    "choice_3": "Peter Dawo",
+    "choice_4": "Mike Okoth",
+    "correct_choice": "4",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 128,
+  "fields": {
+    "question_text": "What is the nickname of the Kenya national football team?",
+    "choice_1": "The Lions",
+    "choice_2": "The Cranes",
+    "choice_3": "Harambee Stars",
+    "choice_4": "The Warriors",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 129,
+  "fields": {
+    "question_text": "Which FKF Premier League club is sponsored by a major brewery company?",
+    "choice_1": "KCB FC",
+    "choice_2": "Tusker FC",
+    "choice_3": "Sofapaka FC",
+    "choice_4": "Posta Rangers",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 130,
+  "fields": {
+    "question_text": "In which year did the Harambee Stars first qualify for the Africa Cup of Nations?",
+    "choice_1": "1972",
+    "choice_2": "1980",
+    "choice_3": "1988",
+    "choice_4": "1992",
+    "correct_choice": "1",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 131,
+  "fields": {
+    "question_text": "Which Kenyan club represented the country in the 2022-2023 CAF Champions League, following their league win?",
+    "choice_1": "Gor Mahia",
+    "choice_2": "Tusker FC",
+    "choice_3": "Kakamega Homeboyz",
+    "choice_4": "Bandari FC",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 132,
+  "fields": {
+    "question_text": "Who was the Kenyan international goalkeeper known for his long career and numerous caps for the Harambee Stars?",
+    "choice_1": "Arnold Origi",
+    "choice_2": "Francis Onyiso",
+    "choice_3": "Mahmoud Abbas",
+    "choice_4": "Willis Ochieng",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 133,
+  "fields": {
+    "question_text": "Who was the first President of the Republic of Kenya?",
+    "choice_1": "Daniel Moi",
+    "choice_2": "Jomo Kenyatta",
+    "choice_3": "Mwai Kibaki",
+    "choice_4": "Oginga Odinga",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 134,
+  "fields": {
+    "question_text": "In what year did Kenya gain full independence from British colonial rule?",
+    "choice_1": "1961",
+    "choice_2": "1963",
+    "choice_3": "1964",
+    "choice_4": "1965",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 135,
+  "fields": {
+    "question_text": "Which prominent Kenyan nationalist leader was assassinated in 1969, leading to significant political unrest?",
+    "choice_1": "Tom Mboya",
+    "choice_2": "Pio Gama Pinto",
+    "choice_3": "Argwings Kodhek",
+    "choice_4": "J.M. Kariuki",
+    "correct_choice": "1",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 136,
+  "fields": {
+    "question_text": "What was the name of the armed resistance movement that fought against British rule in Kenya, primarily during the 1950s?",
+    "choice_1": "KANU",
+    "choice_2": "KADU",
+    "choice_3": "Mau Mau",
+    "choice_4": "Kenya Land and Freedom Army",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 137,
+  "fields": {
+    "question_text": "Who became Kenya's second President after the death of Jomo Kenyatta in 1978?",
+    "choice_1": "Mwai Kibaki",
+    "choice_2": "Raila Odinga",
+    "choice_3": "Daniel arap Moi",
+    "choice_4": "George Saitoti",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 138,
+  "fields": {
+    "question_text": "The 'Saba Saba' day protests in Kenya are associated with the demand for what in the early 1990s?",
+    "choice_1": "Land reform",
+    "choice_2": "Multi-party democracy",
+    "choice_3": "Economic liberalization",
+    "choice_4": "Free education",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 139,
+  "fields": {
+    "question_text": "Which historic event in 2002 marked Kenya's first peaceful transfer of power from an incumbent party to an opposition coalition?",
+    "choice_1": "The 1992 General Election",
+    "choice_2": "The 2002 General Election",
+    "choice_3": "The 2005 Referendum",
+    "choice_4": "The 2007 Post-election violence",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 140,
+  "fields": {
+    "question_text": "What major constitutional change was enacted in Kenya in 2010, introducing a new governance structure?",
+    "choice_1": "Introduction of majimboism",
+    "choice_2": "Adoption of a new constitution",
+    "choice_3": "Repeal of Section 2A",
+    "choice_4": "Creation of devolved governments",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 141,
+  "fields": {
+    "question_text": "Which Kenyan leader served as Vice President for the longest continuous period under President Moi?",
+    "choice_1": "Mwai Kibaki",
+    "choice_2": "Josephat Karanja",
+    "choice_3": "George Saitoti",
+    "choice_4": "Musalia Mudavadi",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 142,
+  "fields": {
+    "question_text": "The 'Lancaster House Conferences' were crucial in negotiating Kenya's independence. In which country were these conferences held?",
+    "choice_1": "Kenya",
+    "choice_2": "United Kingdom",
+    "choice_3": "Tanzania",
+    "choice_4": "South Africa",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 143,
+  "fields": {
+    "question_text": "Who was the first Kenyan woman to be awarded the Nobel Peace Prize for her work in environmental conservation and democracy?",
+    "choice_1": "Wangari Maathai",
+    "choice_2": "Phoebe Asiyo",
+    "choice_3": "Martha Karua",
+    "choice_4": "Charity Ngilu",
+    "correct_choice": "1",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 144,
+  "fields": {
+    "question_text": "What was the primary objective of the 'Majimbo' debate during Kenya's independence negotiations?",
+    "choice_1": "To establish a one-party state",
+    "choice_2": "To centralize power in Nairobi",
+    "choice_3": "To create regional autonomous units",
+    "choice_4": "To form a federation with Tanzania and Uganda",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 145,
+  "fields": {
+    "question_text": "The State House in Nairobi serves as the official residence and principal workplace of which Kenyan office holder?",
+    "choice_1": "Chief Justice",
+    "choice_2": "Speaker of the National Assembly",
+    "choice_3": "President of Kenya",
+    "choice_4": "Prime Cabinet Secretary",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 146,
+  "fields": {
+    "question_text": "Which significant event led to the 2008 power-sharing agreement between Mwai Kibaki and Raila Odinga?",
+    "choice_1": "The 2002 General Election",
+    "choice_2": "The 2005 Constitutional Referendum",
+    "choice_3": "The 2007 Post-election violence",
+    "choice_4": "The death of President Moi",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 147,
+  "fields": {
+    "question_text": "Who was the first African Chief Justice of Kenya?",
+    "choice_1": "Kitili Mwendwa",
+    "choice_2": "Hancox",
+    "choice_3": "Bernard Chunga",
+    "choice_4": "Willy Mutunga",
+    "correct_choice": "1",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 148,
+  "fields": {
+    "question_text": "The 'Odinga-Mboya rivalry' was a significant political dynamic in early independent Kenya. What was their primary political affiliation?",
+    "choice_1": "KADU",
+    "choice_2": "KANU",
+    "choice_3": "FORD",
+    "choice_4": "SDP",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 149,
+  "fields": {
+    "question_text": "What constitutional amendment in 1982 effectively made Kenya a de jure one-party state?",
+    "choice_1": "Repeal of Section 2A",
+    "choice_2": "Introduction of the office of Prime Minister",
+    "choice_3": "Amendment to Chapter 1, Section 2A",
+    "choice_4": "Entrenchment of the Bill of Rights",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 150,
+  "fields": {
+    "question_text": "Which country has won the most FIFA World Cup titles?",
+    "choice_1": "Germany",
+    "choice_2": "Italy",
+    "choice_3": "Argentina",
+    "choice_4": "Brazil",
+    "correct_choice": "4",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 151,
+  "fields": {
+    "question_text": "Who is the all-time leading scorer in the UEFA Champions League?",
+    "choice_1": "Lionel Messi",
+    "choice_2": "Karim Benzema",
+    "choice_3": "Cristiano Ronaldo",
+    "choice_4": "Robert Lewandowski",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 152,
+  "fields": {
+    "question_text": "Which club has won the most UEFA Champions League titles?",
+    "choice_1": "FC Bayern Munich",
+    "choice_2": "AC Milan",
+    "choice_3": "Liverpool FC",
+    "choice_4": "Real Madrid CF",
+    "correct_choice": "4",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 153,
+  "fields": {
+    "question_text": "In what year did France win their first FIFA World Cup title?",
+    "choice_1": "1986",
+    "choice_2": "1998",
+    "choice_3": "2002",
+    "choice_4": "2018",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 154,
+  "fields": {
+    "question_text": "Which legendary player is famously known as 'Pelé'?",
+    "choice_1": "Garrincha",
+    "choice_2": "Eusébio",
+    "choice_3": "Alfredo Di Stéfano",
+    "choice_4": "Edson Arantes do Nascimento",
+    "correct_choice": "4",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 155,
+  "fields": {
+    "question_text": "Which city hosted the final of the 2010 FIFA World Cup?",
+    "choice_1": "Rio de Janeiro",
+    "choice_2": "Berlin",
+    "choice_3": "Johannesburg",
+    "choice_4": "Madrid",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 156,
+  "fields": {
+    "question_text": "Before winning the 2022 World Cup, when was the last time Argentina won the tournament?",
+    "choice_1": "1978",
+    "choice_2": "1986",
+    "choice_3": "1990",
+    "choice_4": "2002",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 157,
+  "fields": {
+    "question_text": "Which English club completed a historic treble (Premier League, FA Cup, Champions League) in the 1998-1999 season?",
+    "choice_1": "Arsenal",
+    "choice_2": "Liverpool FC",
+    "choice_3": "Manchester United",
+    "choice_4": "Chelsea FC",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 158,
+  "fields": {
+    "question_text": "Who was the captain of the German national team when they won the FIFA World Cup in 2014?",
+    "choice_1": "Philipp Lahm",
+    "choice_2": "Bastian Schweinsteiger",
+    "choice_3": "Manuel Neuer",
+    "choice_4": "Miroslav Klose",
+    "correct_choice": "1",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 159,
+  "fields": {
+    "question_text": "Which player holds the record for the most goals scored in a single FIFA World Cup tournament?",
+    "choice_1": "Pelé",
+    "choice_2": "Gerd Müller",
+    "choice_3": "Just Fontaine",
+    "choice_4": "Ronaldo Nazário",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 160,
+  "fields": {
+    "question_text": "Which national team is known by the nickname 'La Roja'?",
+    "choice_1": "Brazil",
+    "choice_2": "Argentina",
+    "choice_3": "Spain",
+    "choice_4": "Italy",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 161,
+  "fields": {
+    "question_text": "The 'El Clásico' derby is contested between which two Spanish football clubs?",
+    "choice_1": "Atlético Madrid and Real Madrid",
+    "choice_2": "Real Madrid and FC Barcelona",
+    "choice_3": "Valencia CF and Sevilla FC",
+    "choice_4": "Athletic Bilbao and Real Sociedad",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 162,
+  "fields": {
+    "question_text": "Which player has won the most Ballon d'Or awards?",
+    "choice_1": "Johan Cruyff",
+    "choice_2": "Michel Platini",
+    "choice_3": "Lionel Messi",
+    "choice_4": "Cristiano Ronaldo",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 163,
+  "fields": {
+    "question_text": "In which year was the first FIFA World Cup tournament held?",
+    "choice_1": "1920",
+    "choice_2": "1930",
+    "choice_3": "1934",
+    "choice_4": "1950",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 164,
+  "fields": {
+    "question_text": "Which Italian club won the UEFA Champions League in 2010 under manager José Mourinho?",
+    "choice_1": "AC Milan",
+    "choice_2": "Juventus",
+    "choice_3": "Inter Milan",
+    "choice_4": "AS Roma",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 165,
+  "fields": {
+    "question_text": "Which African nation was the first to reach the quarter-finals of a FIFA World Cup?",
+    "choice_1": "Cameroon",
+    "choice_2": "Nigeria",
+    "choice_3": "Senegal",
+    "choice_4": "Ghana",
+    "correct_choice": "1",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 166,
+  "fields": {
+    "question_text": "Which Kenyan club holds the record for the most FKF Premier League titles?",
+    "choice_1": "AFC Leopards",
+    "choice_2": "Tusker FC",
+    "choice_3": "Gor Mahia",
+    "choice_4": "Ulinzi Stars",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 167,
+  "fields": {
+    "question_text": "Who was the head coach of the Harambee Stars when they last qualified for the Africa Cup of Nations in 2019?",
+    "choice_1": "Jacob Mulee",
+    "choice_2": "Francis Kimanzi",
+    "choice_3": "Sébastien Migné",
+    "choice_4": "Stanley Okumbi",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 168,
+  "fields": {
+    "question_text": "Which stadium is famously known as the home ground for both Gor Mahia and AFC Leopards in Nairobi derbies?",
+    "choice_1": "Bukhungu Stadium",
+    "choice_2": "Kasarani Stadium",
+    "choice_3": "Nyayo National Stadium",
+    "choice_4": "Moi Stadium Kisumu",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 169,
+  "fields": {
+    "question_text": "Which Gor Mahia legend is often referred to as 'Engineer' and was a prolific striker in the 1980s?",
+    "choice_1": "Peter Dawo",
+    "choice_2": "Sammy Owino",
+    "choice_3": "Allan Thigo",
+    "choice_4": "George Onyango 'Fundi'",
+    "correct_choice": "1",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 170,
+  "fields": {
+    "question_text": "In what year did Gor Mahia famously win the CECAFA Club Championship, becoming the first East African club to do so?",
+    "choice_1": "1979",
+    "choice_2": "1985",
+    "choice_3": "1991",
+    "choice_4": "1976",
+    "correct_choice": "1",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 171,
+  "fields": {
+    "question_text": "Which Kenyan club has won the CECAFA Club Championship the most times?",
+    "choice_1": "Tusker FC",
+    "choice_2": "AFC Leopards",
+    "choice_3": "Gor Mahia",
+    "choice_4": "Kenya Breweries (now Tusker FC)",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 172,
+  "fields": {
+    "question_text": "Who is the all-time leading goal scorer for the Harambee Stars?",
+    "choice_1": "Dennis Oliech",
+    "choice_2": "Mike Okoth",
+    "choice_3": "Joe Kadenge",
+    "choice_4": "Elijah Talam",
+    "correct_choice": "1",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 173,
+  "fields": {
+    "question_text": "Which of these clubs has NOT won the FKF Premier League title in the 21st century (since 2001)?",
+    "choice_1": "Ulinzi Stars",
+    "choice_2": "Mathare United",
+    "choice_3": "Sofapaka",
+    "choice_4": "Western Stima",
+    "correct_choice": "4",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 174,
+  "fields": {
+    "question_text": "The 'Mashemeji Derby' refers to the rivalry between which two Kenyan clubs?",
+    "choice_1": "Tusker FC vs. KCB FC",
+    "choice_2": "Gor Mahia vs. AFC Leopards",
+    "choice_3": "Ulinzi Stars vs. Sofapaka",
+    "choice_4": "Bandari FC vs. Coastal Union",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 175,
+  "fields": {
+    "question_text": "Which Kenyan striker holds the record for the most goals scored in a single FKF Premier League season (modern era, 30-game format)?",
+    "choice_1": "Boniface Ambani",
+    "choice_2": "Allan Wanga",
+    "choice_3": "Elvis Rupia",
+    "choice_4": "Benson Omala",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 176,
+  "fields": {
+    "question_text": "Which former Harambee Stars captain later became the head coach of the national team?",
+    "choice_1": "Musa Otieno",
+    "choice_2": "Dennis Oliech",
+    "choice_3": "Jacob Mulee",
+    "choice_4": "Francis Kimanzi",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 177,
+  "fields": {
+    "question_text": "In the 1987 African Cup Winners' Cup, Gor Mahia defeated which Tunisian club in the final to lift the trophy?",
+    "choice_1": "Club Africain",
+    "choice_2": "Espérance de Tunis",
+    "choice_3": "USM Alger",
+    "choice_4": "Etoile du Sahel",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 178,
+  "fields": {
+    "question_text": "Which of these Kenyan clubs is NOT based in Nairobi?",
+    "choice_1": "Kariobangi Sharks",
+    "choice_2": "Posta Rangers",
+    "choice_3": "Bandari FC",
+    "choice_4": "Nairobi City Stars",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 179,
+  "fields": {
+    "question_text": "Who was the first Kenyan player to play in the English Premier League?",
+    "choice_1": "Victor Wanyama",
+    "choice_2": "Dennis Oliech",
+    "choice_3": "McDonald Mariga",
+    "choice_4": "Lawrence Olum",
+    "correct_choice": "1",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 180,
+  "fields": {
+    "question_text": "The CECAFA Senior Challenge Cup is a competition for national teams from which region?",
+    "choice_1": "West Africa",
+    "choice_2": "Southern Africa",
+    "choice_3": "East and Central Africa",
+    "choice_4": "North Africa",
+    "correct_choice": "3",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 181,
+  "fields": {
+    "question_text": "Which former AFC Leopards striker was nicknamed 'The Machine' for his powerful play?",
+    "choice_1": "Joe Masiga",
+    "choice_2": "Benard Mwalala",
+    "choice_3": "Boniface Ambani",
+    "choice_4": "Dan Shikanda",
+    "correct_choice": "1",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 182,
+  "fields": {
+    "question_text": "Which Kenyan club won the FKF Premier League title in 2021-2022 season?",
+    "choice_1": "Gor Mahia",
+    "choice_2": "Tusker FC",
+    "choice_3": "Homeboyz FC",
+    "choice_4": "KCB FC",
+    "correct_choice": "2",
+    "category": "Local Kenyan Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 183,
+  "fields": {
+    "question_text": "Who was the first President of Kenya?",
+    "choice_1": "Daniel arap Moi",
+    "choice_2": "Mwai Kibaki",
+    "choice_3": "Jomo Kenyatta",
+    "choice_4": "Oginga Odinga",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 184,
+  "fields": {
+    "question_text": "In what year did Kenya gain independence from British colonial rule?",
+    "choice_1": "1957",
+    "choice_2": "1960",
+    "choice_3": "1963",
+    "choice_4": "1969",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 185,
+  "fields": {
+    "question_text": "Which prominent Kenyan nationalist leader was assassinated in 1969, leading to political unrest?",
+    "choice_1": "Pio Gama Pinto",
+    "choice_2": "Tom Mboya",
+    "choice_3": "J.M. Kariuki",
+    "choice_4": "Argwings Kodhek",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 186,
+  "fields": {
+    "question_text": "The 'Mau Mau Uprising' primarily involved which ethnic group fighting for land and freedom?",
+    "choice_1": "Luo",
+    "choice_2": "Luhya",
+    "choice_3": "Kamba",
+    "choice_4": "Gikuyu",
+    "correct_choice": "4",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 187,
+  "fields": {
+    "question_text": "Who succeeded Jomo Kenyatta as the second President of Kenya?",
+    "choice_1": "Mwai Kibaki",
+    "choice_2": "Daniel arap Moi",
+    "choice_3": "Oginga Odinga",
+    "choice_4": "Uhuru Kenyatta",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 188,
+  "fields": {
+    "question_text": "The 'Sessional Paper No. 10 of 1965' primarily outlined Kenya's economic policy favoring what?",
+    "choice_1": "Socialism",
+    "choice_2": "African Socialism",
+    "choice_3": "Capitalism",
+    "choice_4": "Communism",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 189,
+  "fields": {
+    "question_text": "Which historic event led to the detention of Jomo Kenyatta and other nationalist leaders by the British?",
+    "choice_1": "The Lari Massacre",
+    "choice_2": "The Kapenguria Six Trial",
+    "choice_3": "The Hola Massacre",
+    "choice_4": "The Lancaster House Conferences",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 190,
+  "fields": {
+    "question_text": "The 'multiparty era' in Kenya officially began after the repeal of which constitutional section in 1991?",
+    "choice_1": "Section 2A",
+    "choice_2": "Section 70",
+    "choice_3": "Section 123",
+    "choice_4": "Section 5",
+    "correct_choice": "1",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 191,
+  "fields": {
+    "question_text": "Which Kenyan Nobel Peace Laureate is renowned for her work in environmental conservation and women's rights through the Green Belt Movement?",
+    "choice_1": "Wangari Maathai",
+    "choice_2": "Tegla Loroupe",
+    "choice_3": "Effie Owuor",
+    "choice_4": "Mary Leakey",
+    "correct_choice": "1",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 192,
+  "fields": {
+    "question_text": "Uhuru Gardens Memorial Park in Nairobi is a significant historical site primarily commemorating which event?",
+    "choice_1": "The founding of the East African Community",
+    "choice_2": "The declaration of the State of Emergency",
+    "choice_3": "Kenya's independence celebrations in 1963",
+    "choice_4": "The Mau Mau uprising's final battle",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 193,
+  "fields": {
+    "question_text": "Which general election in Kenya is widely remembered for the 'Queuing' system of voting?",
+    "choice_1": "1988",
+    "choice_2": "1992",
+    "choice_3": "1997",
+    "choice_4": "2002",
+    "correct_choice": "1",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 194,
+  "fields": {
+    "question_text": "The 'Lancaster House Conferences' were crucial for Kenya's independence. In which city were they primarily held?",
+    "choice_1": "Nairobi",
+    "choice_2": "London",
+    "choice_3": "Geneva",
+    "choice_4": "Washington D.C.",
+    "correct_choice": "2",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 195,
+  "fields": {
+    "question_text": "Who was Kenya's third President, serving from 2002 to 2013?",
+    "choice_1": "Uhuru Kenyatta",
+    "choice_2": "Raila Odinga",
+    "choice_3": "Mwai Kibaki",
+    "choice_4": "Daniel arap Moi",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 196,
+  "fields": {
+    "question_text": "The 'Kenyatta Day' national holiday was renamed to which current national holiday?",
+    "choice_1": "Mashujaa Day",
+    "choice_2": "Madaraka Day",
+    "choice_3": "Jamhuri Day",
+    "choice_4": "Utamaduni Day",
+    "correct_choice": "1",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 197,
+  "fields": {
+    "question_text": "Which document was promulgated in 2010, bringing about significant constitutional reforms in Kenya?",
+    "choice_1": "The Bomas Draft",
+    "choice_2": "The Ghai Review",
+    "choice_3": "The Constitution of Kenya (2010)",
+    "choice_4": "The Limuru Resolutions",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 198,
+  "fields": {
+    "question_text": "Who served as Kenya's Vice President under Jomo Kenyatta from 1966 until Kenyatta's death in 1978?",
+    "choice_1": "Oginga Odinga",
+    "choice_2": "Joseph Murumbi",
+    "choice_3": "Daniel arap Moi",
+    "choice_4": "Mwai Kibaki",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 199,
+  "fields": {
+    "question_text": "The 'Wagalla Massacre' in 1984 involved state security forces and affected which community?",
+    "choice_1": "Maasai",
+    "choice_2": "Pokot",
+    "choice_3": "Somali (Degodia clan)",
+    "choice_4": "Luhya",
+    "correct_choice": "3",
+    "category": "Kenyan History",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 200,
+  "fields": {
+    "question_text": "Which country has won the most FIFA World Cup titles?",
+    "choice_1": "Germany",
+    "choice_2": "Italy",
+    "choice_3": "Brazil",
+    "choice_4": "Argentina",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 201,
+  "fields": {
+    "question_text": "Who is the all-time leading goal scorer in the history of the FIFA World Cup?",
+    "choice_1": "Pelé",
+    "choice_2": "Miroslav Klose",
+    "choice_3": "Ronaldo Nazário",
+    "choice_4": "Lionel Messi",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 202,
+  "fields": {
+    "question_text": "Which club has won the most UEFA Champions League titles?",
+    "choice_1": "FC Barcelona",
+    "choice_2": "Bayern Munich",
+    "choice_3": "AC Milan",
+    "choice_4": "Real Madrid",
+    "correct_choice": "4",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.429Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 203,
+  "fields": {
+    "question_text": "In what year did France win their first FIFA World Cup title?",
+    "choice_1": "1986",
+    "choice_2": "1998",
+    "choice_3": "2002",
+    "choice_4": "2018",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.430Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 204,
+  "fields": {
+    "question_text": "Which player has won the most Ballon d'Or awards?",
+    "choice_1": "Cristiano Ronaldo",
+    "choice_2": "Lionel Messi",
+    "choice_3": "Michel Platini",
+    "choice_4": "Johan Cruyff",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.430Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 205,
+  "fields": {
+    "question_text": "Which city hosted the final of the 2010 FIFA World Cup?",
+    "choice_1": "Rio de Janeiro",
+    "choice_2": "Berlin",
+    "choice_3": "Johannesburg",
+    "choice_4": "Paris",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.430Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 206,
+  "fields": {
+    "question_text": "Which African nation was the first to reach the quarter-finals of the FIFA World Cup?",
+    "choice_1": "Cameroon",
+    "choice_2": "Nigeria",
+    "choice_3": "Ghana",
+    "choice_4": "Senegal",
+    "correct_choice": "1",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.430Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 207,
+  "fields": {
+    "question_text": "Who is the only player to have won the UEFA Champions League with three different clubs?",
+    "choice_1": "Clarence Seedorf",
+    "choice_2": "Samuel Eto'o",
+    "choice_3": "Zlatan Ibrahimović",
+    "choice_4": "Cristiano Ronaldo",
+    "correct_choice": "1",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.430Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 208,
+  "fields": {
+    "question_text": "The 'Invincibles' season, where a team went an entire league campaign undefeated, was achieved by which club in the Premier League?",
+    "choice_1": "Manchester United",
+    "choice_2": "Liverpool",
+    "choice_3": "Arsenal",
+    "choice_4": "Chelsea",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.430Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 209,
+  "fields": {
+    "question_text": "Which country won the inaugural FIFA Women's World Cup in 1991?",
+    "choice_1": "Germany",
+    "choice_2": "Norway",
+    "choice_3": "USA",
+    "choice_4": "China",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.430Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 210,
+  "fields": {
+    "question_text": "Who scored the 'Hand of God' goal and the 'Goal of the Century' in the same match at the 1986 FIFA World Cup?",
+    "choice_1": "Pelé",
+    "choice_2": "Diego Maradona",
+    "choice_3": "Johan Cruyff",
+    "choice_4": "Zinedine Zidane",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.430Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 211,
+  "fields": {
+    "question_text": "Which club is known for its famous anthem 'You'll Never Walk Alone'?",
+    "choice_1": "Manchester United",
+    "choice_2": "Liverpool",
+    "choice_3": "Celtic",
+    "choice_4": "Borussia Dortmund",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.430Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 212,
+  "fields": {
+    "question_text": "How many teams participate in the group stage of the UEFA Champions League before the knockout rounds (prior to the 2024-25 format change)?",
+    "choice_1": "16",
+    "choice_2": "24",
+    "choice_3": "32",
+    "choice_4": "48",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.430Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 213,
+  "fields": {
+    "question_text": "Which player holds the record for the most goals scored in a single calendar year (club and country)?",
+    "choice_1": "Cristiano Ronaldo",
+    "choice_2": "Gerd Müller",
+    "choice_3": "Lionel Messi",
+    "choice_4": "Pelé",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.430Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 214,
+  "fields": {
+    "question_text": "Which national team is known by the nickname 'La Roja'?",
+    "choice_1": "Brazil",
+    "choice_2": "Spain",
+    "choice_3": "Argentina",
+    "choice_4": "Portugal",
+    "correct_choice": "2",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.430Z"
+  }
+},
+{
+  "model": "quiz.standbyquestion",
+  "pk": 215,
+  "fields": {
+    "question_text": "The first FIFA World Cup in 1930 was hosted and won by which country?",
+    "choice_1": "Italy",
+    "choice_2": "Brazil",
+    "choice_3": "Uruguay",
+    "choice_4": "Argentina",
+    "correct_choice": "3",
+    "category": "World General Football",
+    "times_used": 0,
+    "created_at": "2026-07-23T08:14:58.430Z"
+  }
+}
+]
